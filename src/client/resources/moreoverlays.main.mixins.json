@@ -1,0 +1,13 @@
+{
+	"required": false,
+	"package": "at.ridgo8.moreoverlays.mixin.client",
+	"compatibilityLevel": "JAVA_17",
+	"client": [
+		"MixinDebugRenderer",
+		"MixinOnRenderTail",
+		"MixinOverlayRenderer"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

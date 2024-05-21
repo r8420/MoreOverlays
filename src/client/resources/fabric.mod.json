@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"id": "moreoverlays",
+	"version": "${version}",
+	"name": "MoreOverlays",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"feldim2425",
+		"RiDGo8 / R8420"
+	],
+	"contact": {
+		"homepage": "https://www.curseforge.com/minecraft/mc-mods/more-overlays-updated",
+		"sources": "https://github.com/r8420/MoreOverlays-updated/"
+	},
+	"license": "The MIT License (MIT)",
+	"icon": "moreoverlays.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"at.ridgo8.moreoverlays.MoreOverlays"
+		]
+	},
+	"mixins": [
+		"moreoverlays.main.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.0",
+		"minecraft": "~1.20",
+		"java": ">=17",
+		"fabric-api": "*"
+	}
+}
