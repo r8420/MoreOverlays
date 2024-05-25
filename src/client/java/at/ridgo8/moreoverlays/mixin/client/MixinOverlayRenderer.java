@@ -1,4 +1,4 @@
-package at.ridgo8.moreoverlays.mixin.main;
+package at.ridgo8.moreoverlays.mixin.client;
 
 
 import org.spongepowered.asm.mixin.Mixin;
