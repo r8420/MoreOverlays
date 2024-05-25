@@ -1,51 +1,44 @@
 package at.ridgo8.moreoverlays;
 
-// import at.ridgo8.moreoverlays.chunkbounds.ChunkBoundsHandler;
-// import at.ridgo8.moreoverlays.lightoverlay.LightOverlayHandler;
-import com.mojang.blaze3d.platform.InputConstants;
-// import net.minecraftforge.api.distmarker.Dist;
-// import net.minecraftforge.api.distmarker.OnlyIn;
-// import net.minecraftforge.client.event.InputEvent;
-// import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-// import net.minecraftforge.common.MinecraftForge;
-// import net.minecraftforge.eventbus.api.SubscribeEvent;
-// import net.minecraftforge.fml.DistExecutor;
-// import net.minecraftforge.fml.common.Mod;
+import org.lwjgl.glfw.GLFW;
 
-// @Mod.EventBusSubscriber(modid = MoreOverlays.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+import com.mojang.blaze3d.platform.InputConstants;
+
+import at.ridgo8.moreoverlays.chunkbounds.ChunkBoundsHandler;
+import at.ridgo8.moreoverlays.lightoverlay.LightOverlayHandler;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.minecraft.client.KeyMapping;
+
 public class KeyBindings {
 
-    static InputConstants.Key mappedKey(int key) {
-        return InputConstants.Type.KEYSYM.getOrCreate(key);
+    public static void init() {
+        
+		KeyMapping lightOverlayKeyMapping = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+			"key." + MoreOverlays.MOD_ID + ".lightoverlay.desc", // The translation key of the keybinding's name
+			InputConstants.Type.KEYSYM, // The type of the keybinding, KEYSYM for keyboard, MOUSE for mouse.
+			GLFW.GLFW_KEY_F7, // The keycode of the key
+			"key." + MoreOverlays.MOD_ID + ".category" // The translation key of the keybinding's category.
+		));
+	
+		KeyMapping chunkBoundsKeyMapping = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+			"key." + MoreOverlays.MOD_ID + ".chunkbounds.desc", // The translation key of the keybinding's name
+			InputConstants.Type.KEYSYM, // The type of the keybinding, KEYSYM for keyboard, MOUSE for mouse.
+			GLFW.GLFW_KEY_F9, // The keycode of the key
+			"key." + MoreOverlays.MOD_ID + ".category" // The translation key of the keybinding's category.
+		));
+
+
+		ClientTickEvents.END_CLIENT_TICK.register(client -> {
+			if (chunkBoundsKeyMapping.consumeClick()) {
+				ChunkBoundsHandler.toggleMode();
+			}
+		});
+
+		ClientTickEvents.END_CLIENT_TICK.register(client -> {
+			if (lightOverlayKeyMapping.consumeClick()) {
+				LightOverlayHandler.setEnabled(!LightOverlayHandler.isEnabled());
+			}
+		});
     }
-
-    // public static void init() {
-    //     MinecraftForge.EVENT_BUS.register(new KeyBindings());
-    // }
-
-    // public static RegisterKeyMappingsEvent currentEvent;
-
-    // @OnlyIn(Dist.CLIENT)
-    // @SubscribeEvent
-    // public static void onKeyMapping(RegisterKeyMappingsEvent event) {
-    //     currentEvent = event;
-    //     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> KeyBindings::registerKeyMappings);
-    // }
-
-    // private static void registerKeyMappings() {
-    //     currentEvent.register(ClientRegistrationHandler.lightOverlayKeyMapping);
-    //     currentEvent.register(ClientRegistrationHandler.chunkBoundsKeyMapping);
-    // }
-
-    // @OnlyIn(Dist.CLIENT)
-    // @SubscribeEvent(receiveCanceled = true)
-    // public void onKeyEvent(InputEvent.Key event) {
-    //     if (ClientRegistrationHandler.lightOverlayKeyMapping.consumeClick()) {
-    //         LightOverlayHandler.setEnabled(!LightOverlayHandler.isEnabled());
-    //     }
-
-    //     if (ClientRegistrationHandler.chunkBoundsKeyMapping.consumeClick()) {
-    //         ChunkBoundsHandler.toggleMode();
-    //     }
-    // }
 }

@@ -16,7 +16,6 @@ import net.minecraft.client.gui.screens.Screen;
 // import net.minecraftforge.fml.ModLoadingContext;
 import org.lwjgl.glfw.GLFW;
 
-import static at.ridgo8.moreoverlays.KeyBindings.mappedKey;
 
 public final class ClientRegistrationHandler {
 
@@ -39,7 +38,7 @@ public final class ClientRegistrationHandler {
         //         () -> new ConfigScreenHandler.ConfigScreenFactory((minecraft, screen) -> new ConfigScreen(screen,Config.config_client, MoreOverlays.MOD_ID)));
 
         // enable_jei = ModList.get().isLoaded("jei");
-        // KeyBindings.init();
+        KeyBindings.init();
 
         // LightOverlayHandler.init();
         // ChunkBoundsHandler.init();
