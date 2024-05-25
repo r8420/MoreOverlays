@@ -60,7 +60,7 @@ public class ChunkBoundsHandler {
     }
 
     @SubscribeEvent
-    public void onOverlayRender(CustomizeGuiOverlayEvent.DebugText event) {
+    public void onOverlayRender(CustomizeGuiOverlayEvent.Chat event) {
         if (regionInfo.isEmpty()) {
             return;
         }
