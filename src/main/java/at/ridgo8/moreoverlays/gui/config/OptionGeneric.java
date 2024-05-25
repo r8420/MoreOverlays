@@ -9,7 +9,7 @@ import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class OptionGeneric<V>
 
     private final EditBox tfConfigEntry;
 
-    public OptionGeneric(ConfigOptionList list, ForgeConfigSpec.ConfigValue<V> valSpec, ForgeConfigSpec.ValueSpec spec) {
+    public OptionGeneric(ConfigOptionList list, ModConfigSpec.ConfigValue<V> valSpec, ModConfigSpec.ValueSpec spec) {
         super(list, valSpec, spec);
         this.showValidity = true;
 
@@ -79,11 +79,11 @@ public class OptionGeneric<V>
         try {
             if (this.spec.getClazz() == String.class) {
                 this.updateValue((V) this.tfConfigEntry.getValue());
-            } else if (this.value instanceof ForgeConfigSpec.IntValue) {
+            } else if (this.value instanceof ModConfigSpec.IntValue) {
                 this.updateValue((V) Integer.valueOf(this.tfConfigEntry.getValue()));
-            } else if (this.value instanceof ForgeConfigSpec.DoubleValue) {
+            } else if (this.value instanceof ModConfigSpec.DoubleValue) {
                 this.updateValue((V) Double.valueOf(this.tfConfigEntry.getValue()));
-            } else if (this.value instanceof ForgeConfigSpec.BooleanValue) {
+            } else if (this.value instanceof ModConfigSpec.BooleanValue) {
                 this.updateValue((V) Boolean.valueOf(this.tfConfigEntry.getValue()));
             }
         } catch (NumberFormatException e) {

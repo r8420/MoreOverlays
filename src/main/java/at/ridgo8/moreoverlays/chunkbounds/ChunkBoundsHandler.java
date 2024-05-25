@@ -4,17 +4,16 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.TickEvent;
+// import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.reflect.Field;
 
 
 public class ChunkBoundsHandler {
@@ -34,7 +33,7 @@ public class ChunkBoundsHandler {
     }
 
     public static void init() {
-        MinecraftForge.EVENT_BUS.register(new ChunkBoundsHandler());
+        NeoForge.EVENT_BUS.register(new ChunkBoundsHandler());
     }
 
     public static RenderMode getMode() {

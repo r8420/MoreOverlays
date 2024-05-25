@@ -4,12 +4,13 @@ import at.ridgo8.moreoverlays.ClientRegistrationHandler;
 import at.ridgo8.moreoverlays.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraftforge.client.event.ScreenEvent;
-import net.minecraftforge.client.event.RenderTooltipEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.neoforged.neoforge.client.event.ScreenEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.client.event.RenderTooltipEvent;
+// import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
 
 public class GuiHandler {
 
@@ -17,7 +18,7 @@ public class GuiHandler {
 
     public static void init() {
         if (ClientRegistrationHandler.isJeiInstalled())
-            MinecraftForge.EVENT_BUS.register(new GuiHandler());
+            NeoForge.EVENT_BUS.register(new GuiHandler());
     }
 
     @Deprecated

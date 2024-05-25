@@ -10,7 +10,7 @@ import com.mojang.blaze3d.platform.Lighting;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -22,8 +22,8 @@ public abstract class OptionValueEntry<V> extends ConfigOptionList.OptionEntry {
     public static final int CONTROL_WIDTH_NOVALIDATOR = 44;
     public static final int CONTROL_WIDTH_VALIDATOR = 64;
     public static final int TITLE_WIDTH = 80;
-    protected final ForgeConfigSpec.ConfigValue<V> value;
-    protected final ForgeConfigSpec.ValueSpec spec;
+    protected final ModConfigSpec.ConfigValue<V> value;
+    protected final ModConfigSpec.ValueSpec spec;
     private final List<String> tooltip;
     protected Button btnReset;
     protected Button btnUndo;
@@ -37,7 +37,7 @@ public abstract class OptionValueEntry<V> extends ConfigOptionList.OptionEntry {
     private boolean changes = false;
 
     @SuppressWarnings("unchecked")
-    public OptionValueEntry(ConfigOptionList list, ForgeConfigSpec.ConfigValue<V> confValue, ForgeConfigSpec.ValueSpec spec) {
+    public OptionValueEntry(ConfigOptionList list, ModConfigSpec.ConfigValue<V> confValue, ModConfigSpec.ValueSpec spec) {
         super(list);
         this.value = confValue;
         this.spec = spec;

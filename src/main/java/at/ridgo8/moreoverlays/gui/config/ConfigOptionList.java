@@ -12,7 +12,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import com.mojang.blaze3d.platform.Lighting;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -32,7 +32,7 @@ public class ConfigOptionList extends ContainerObjectSelectionList<ConfigOptionL
     private final ConfigScreen parent;
     private final String modId;
 
-    private ForgeConfigSpec rootConfig;
+    private ModConfigSpec rootConfig;
     private List<String> configPath = Collections.emptyList();
     private Map<String, Object> currentMap;
     private CommentedConfig comments;
@@ -88,21 +88,21 @@ public class ConfigOptionList extends ContainerObjectSelectionList<ConfigOptionL
         return "config." + this.modId + ".category." + path.stream().collect(Collectors.joining("."));
     }
 
-    public void setConfiguration(ForgeConfigSpec rootConfig) {
+    public void setConfiguration(ModConfigSpec rootConfig) {
         this.setConfiguration(rootConfig, Collections.emptyList());
     }
 
-    public void setConfiguration(ForgeConfigSpec rootConfig, List<String> path) {
+    public void setConfiguration(ModConfigSpec rootConfig, List<String> path) {
         this.rootConfig = rootConfig;
         try {
-            final Field forgeconfigspec_childconfig = ForgeConfigSpec.class.getDeclaredField("childConfig");
+            final Field forgeconfigspec_childconfig = ModConfigSpec.class.getDeclaredField("childConfig");
             forgeconfigspec_childconfig.setAccessible(true);
             final Object childConfig_raw = forgeconfigspec_childconfig.get(rootConfig);
             if (childConfig_raw instanceof CommentedConfig) {
                 this.comments = (CommentedConfig) childConfig_raw;
             }
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-            MoreOverlays.logger.warn("Couldn't reflect childConfig from ForgeConfigSpec! Comments will be missing.", e);
+            MoreOverlays.logger.warn("Couldn't reflect childConfig from ModConfigSpec! Comments will be missing.", e);
         }
         this.updatePath(path);
     }
@@ -197,10 +197,10 @@ public class ConfigOptionList extends ContainerObjectSelectionList<ConfigOptionL
             if (cEntry.getValue() instanceof UnmodifiableConfig) {
                 final String name = I18n.get(categoryTitleKey(fullPath));
                 this.addEntry(new OptionCategory(this, Arrays.asList(cEntry.getKey()), name, comment));
-            } else if (cEntry.getValue() instanceof ForgeConfigSpec.BooleanValue) {
-                this.addEntry(new OptionBoolean(this, (ForgeConfigSpec.BooleanValue) cEntry.getValue(), rootConfig.getSpec().get(fullPath)));
+            } else if (cEntry.getValue() instanceof ModConfigSpec.BooleanValue) {
+                this.addEntry(new OptionBoolean(this, (ModConfigSpec.BooleanValue) cEntry.getValue(), rootConfig.getSpec().get(fullPath)));
             } else {
-                this.addEntry(new OptionGeneric<>(this, (ForgeConfigSpec.ConfigValue<?>) cEntry.getValue(), (ForgeConfigSpec.ValueSpec) rootConfig.getSpec().get(fullPath)));
+                this.addEntry(new OptionGeneric<>(this, (ModConfigSpec.ConfigValue<?>) cEntry.getValue(), (ModConfigSpec.ValueSpec) rootConfig.getSpec().get(fullPath)));
             }
         }
         this.setFocused(null);
@@ -210,7 +210,7 @@ public class ConfigOptionList extends ContainerObjectSelectionList<ConfigOptionL
         return Collections.unmodifiableList(this.configPath);
     }
 
-    public ForgeConfigSpec getConfig() {
+    public ModConfigSpec getConfig() {
         return this.rootConfig;
     }
 

@@ -2,7 +2,7 @@ package at.ridgo8.moreoverlays.itemsearch;
 
 import at.ridgo8.moreoverlays.MoreOverlays;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+import net.neoforged.fml.util.ObfuscationReflectionHelper;
 
 import java.lang.reflect.Field;
 
@@ -13,10 +13,10 @@ public class GuiUtils {
 
     public static void initUtil() {
         try {
-            fieldLeft = ObfuscationReflectionHelper.findField(AbstractContainerScreen.class, "f_97735_");
+            fieldLeft = ObfuscationReflectionHelper.findField(AbstractContainerScreen.class, "leftPos");
             fieldLeft.setAccessible(true);
 
-            fieldTop = ObfuscationReflectionHelper.findField(AbstractContainerScreen.class, "f_97736_");
+            fieldTop = ObfuscationReflectionHelper.findField(AbstractContainerScreen.class, "topPos");
             fieldTop.setAccessible(true);
         } catch (ObfuscationReflectionHelper.UnableToFindFieldException e) {
             MoreOverlays.logger.error("Tried to load gui coordinate fields for reflection");

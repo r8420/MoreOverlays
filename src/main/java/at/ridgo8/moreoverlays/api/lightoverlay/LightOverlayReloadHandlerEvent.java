@@ -1,6 +1,6 @@
 package at.ridgo8.moreoverlays.api.lightoverlay;
 
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
 
 public class LightOverlayReloadHandlerEvent extends Event {
 

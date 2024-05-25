@@ -10,10 +10,13 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +30,13 @@ public class LightScannerVanilla extends LightScannerBase {
     private final List<EntityType<?>> typesToCheck;
 
     public LightScannerVanilla() {
-        typesToCheck = ForgeRegistries.ENTITY_TYPES.getValues().stream().filter((type) -> type.canSummon() && type.getCategory() == MobCategory.MONSTER).collect(Collectors.toList());
+        // typesToCheck = BuiltInRegistries.ENTITY_TYPE.getTags().filter((type) -> type.canSummon() && type.getCategory() == MobCategory.MONSTER).collect(Collectors.toList());
+
+        typesToCheck = BuiltInRegistries.ENTITY_TYPE.getTags()
+            .flatMap(pair -> pair.getSecond().stream())
+            .filter(holder -> holder.value().canSummon() && holder.value().getCategory() == MobCategory.MONSTER)
+            .map(Holder::value)
+            .collect(Collectors.toList());
     }
 
     private static boolean checkCollision(BlockPos pos, Level world) {

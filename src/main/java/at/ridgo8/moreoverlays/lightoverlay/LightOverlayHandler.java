@@ -8,11 +8,13 @@ import at.ridgo8.moreoverlays.config.Config;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.level.LevelEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.common.NeoForge;
+// import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.neoforge.event.TickEvent.ClientTickEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.bus.api.SubscribeEvent;
 
 import net.minecraft.network.chat.Component;
 
@@ -27,7 +29,7 @@ public class LightOverlayHandler {
     public static ILightScanner scanner = null;
 
     public static void init() {
-        MinecraftForge.EVENT_BUS.register(new LightOverlayHandler());
+        NeoForge.EVENT_BUS.register(new LightOverlayHandler());
     }
 
     public static boolean isEnabled() {
@@ -58,7 +60,7 @@ public class LightOverlayHandler {
 
     private static void reloadHandlerInternal() {
         LightOverlayReloadHandlerEvent event = new LightOverlayReloadHandlerEvent(Config.light_IgnoreSpawnList.get(), LightOverlayRenderer.class, LightScannerVanilla.class);
-        MinecraftForge.EVENT_BUS.post(event);
+        NeoForge.EVENT_BUS.post(event);
 
         if (renderer == null || renderer.getClass() != event.getRenderer()) {
             try {

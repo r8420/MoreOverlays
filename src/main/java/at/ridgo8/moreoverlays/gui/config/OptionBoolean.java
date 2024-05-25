@@ -9,7 +9,7 @@ import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class OptionBoolean
     private final Button btnChange;
     private boolean state;
 
-    public OptionBoolean(ConfigOptionList list, ForgeConfigSpec.BooleanValue valSpec, ForgeConfigSpec.ValueSpec spec) {
+    public OptionBoolean(ConfigOptionList list, ModConfigSpec.BooleanValue valSpec, ModConfigSpec.ValueSpec spec) {
         super(list, valSpec, spec);
         this.showValidity = false;
 

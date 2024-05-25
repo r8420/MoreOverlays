@@ -1,39 +1,40 @@
 package at.ridgo8.moreoverlays.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+// import net.neoforged.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class Config {
-    public static ForgeConfigSpec config_client;
+    public static ModConfigSpec config_client;
 
-    public static ForgeConfigSpec.IntValue light_UpRange;
-    public static ForgeConfigSpec.IntValue light_DownRange;
-    public static ForgeConfigSpec.IntValue light_HRange;
-    public static ForgeConfigSpec.BooleanValue light_IgnoreLayer;
-    public static ForgeConfigSpec.BooleanValue light_IgnoreSpawnList;
-    public static ForgeConfigSpec.BooleanValue light_SimpleEntityCheck;
-    public static ForgeConfigSpec.IntValue light_SaveLevel;
-    public static ForgeConfigSpec.BooleanValue light_FinishedMigration;
+    public static ModConfigSpec.IntValue light_UpRange;
+    public static ModConfigSpec.IntValue light_DownRange;
+    public static ModConfigSpec.IntValue light_HRange;
+    public static ModConfigSpec.BooleanValue light_IgnoreLayer;
+    public static ModConfigSpec.BooleanValue light_IgnoreSpawnList;
+    public static ModConfigSpec.BooleanValue light_SimpleEntityCheck;
+    public static ModConfigSpec.IntValue light_SaveLevel;
+    public static ModConfigSpec.BooleanValue light_FinishedMigration;
 
-    public static ForgeConfigSpec.IntValue chunk_EdgeRadius;
-    public static ForgeConfigSpec.BooleanValue chunk_ShowMiddle;
+    public static ModConfigSpec.IntValue chunk_EdgeRadius;
+    public static ModConfigSpec.BooleanValue chunk_ShowMiddle;
 
-    public static ForgeConfigSpec.IntValue render_chunkEdgeColor;
-    public static ForgeConfigSpec.IntValue render_chunkGridColor;
-    public static ForgeConfigSpec.IntValue render_chunkMiddleColor;
-    public static ForgeConfigSpec.DoubleValue render_chunkLineWidth;
-    public static ForgeConfigSpec.IntValue render_spawnAColor;
-    public static ForgeConfigSpec.IntValue render_spawnNColor;
-    public static ForgeConfigSpec.DoubleValue render_spawnLineWidth;
+    public static ModConfigSpec.IntValue render_chunkEdgeColor;
+    public static ModConfigSpec.IntValue render_chunkGridColor;
+    public static ModConfigSpec.IntValue render_chunkMiddleColor;
+    public static ModConfigSpec.DoubleValue render_chunkLineWidth;
+    public static ModConfigSpec.IntValue render_spawnAColor;
+    public static ModConfigSpec.IntValue render_spawnNColor;
+    public static ModConfigSpec.DoubleValue render_spawnLineWidth;
 
-    public static ForgeConfigSpec.BooleanValue search_enabled;
-    public static ForgeConfigSpec.BooleanValue search_searchCustom;
-    public static ForgeConfigSpec.IntValue search_searchBoxColor;
-    public static ForgeConfigSpec.IntValue search_filteredSlotColor;
-    public static ForgeConfigSpec.DoubleValue search_filteredSlotTransparancy;
+    public static ModConfigSpec.BooleanValue search_enabled;
+    public static ModConfigSpec.BooleanValue search_searchCustom;
+    public static ModConfigSpec.IntValue search_searchBoxColor;
+    public static ModConfigSpec.IntValue search_filteredSlotColor;
+    public static ModConfigSpec.DoubleValue search_filteredSlotTransparancy;
 
 
     public static void initialize() {
-        final ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
+        final ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
 
         builder.comment("Settings for the light / mobspawn overlay").push("lightoverlay");
         light_UpRange = builder.comment("Range of the lightoverlay (positive Y)").defineInRange("uprange", 4, 0, Integer.MAX_VALUE);

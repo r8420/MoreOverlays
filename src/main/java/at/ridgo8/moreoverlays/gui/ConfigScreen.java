@@ -9,7 +9,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 public class ConfigScreen extends Screen {
 
     private final String modId;
-    private final ForgeConfigSpec configSpec;
+    private final ModConfigSpec configSpec;
     private final List<String> pathCache = new ArrayList<>();
     private final Screen modListScreen;
     private ConfigOptionList optionList;
@@ -30,7 +30,7 @@ public class ConfigScreen extends Screen {
     private String txtReset = "";
     private String txtDone = "";
 
-    public ConfigScreen(Screen modListScreen, ForgeConfigSpec spec, String modId) {
+    public ConfigScreen(Screen modListScreen, ModConfigSpec spec, String modId) {
         super(Component.translatable("gui.config." + modId + ".tile"));
         this.modListScreen = modListScreen;
         this.configSpec = spec;
