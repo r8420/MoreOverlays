@@ -10,9 +10,7 @@ import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.Minecraft;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.common.NeoForge;
-// import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.event.TickEvent;
-import net.neoforged.neoforge.event.TickEvent.ClientTickEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 
@@ -99,8 +97,8 @@ public class LightOverlayHandler {
     }
 
     @SubscribeEvent
-    public void onClientTick(TickEvent.ClientTickEvent event) {
-        if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && enabled && event.phase == TickEvent.Phase.END &&
+    public void onClientTick(ClientTickEvent.Post event) {
+        if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && enabled &&
                 (Minecraft.getInstance().screen == null || !Minecraft.getInstance().screen.isPauseScreen())) {
             scanner.update(Minecraft.getInstance().player);
         }

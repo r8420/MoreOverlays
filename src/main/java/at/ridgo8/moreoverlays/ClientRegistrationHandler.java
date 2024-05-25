@@ -9,15 +9,15 @@ import at.ridgo8.moreoverlays.lightoverlay.LightOverlayHandler;
 import at.ridgo8.moreoverlays.lightoverlay.integration.AlternateLightHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import net.neoforged.neoforge.client.ConfigScreenHandler;
-import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoadingContext;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 
 
-@Mod.EventBusSubscriber(modid = MoreOverlays.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber(modid = MoreOverlays.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public final class ClientRegistrationHandler {
 
     private static boolean enable_jei = false;
@@ -32,8 +32,8 @@ public final class ClientRegistrationHandler {
 
     public static void setupClient() {
         final ModLoadingContext ctx = ModLoadingContext.get();
-        ctx.registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
-                () -> new ConfigScreenHandler.ConfigScreenFactory((minecraft, screen) -> new ConfigScreen(screen, Config.config_client, MoreOverlays.MOD_ID)));
+        ctx.registerExtensionPoint(IConfigScreenFactory.class,
+                () -> (minecraft, screen) -> new ConfigScreen(screen, Config.config_client, MoreOverlays.MOD_ID));
 
         enable_jei = ModList.get().isLoaded("jei");
 
@@ -56,10 +56,8 @@ public final class ClientRegistrationHandler {
     }
 
     @SubscribeEvent
-    public static void onClientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            checkAndToggleKeyMappings();
-        }
+    public static void onClientTick(ClientTickEvent.Post event) {
+        checkAndToggleKeyMappings();
     }
 
     private static void checkAndToggleKeyMappings() {

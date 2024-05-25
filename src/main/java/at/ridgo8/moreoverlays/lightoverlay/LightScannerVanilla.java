@@ -3,20 +3,17 @@ package at.ridgo8.moreoverlays.lightoverlay;
 import at.ridgo8.moreoverlays.api.lightoverlay.LightScannerBase;
 import at.ridgo8.moreoverlays.config.Config;
 import com.google.common.collect.Lists;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.Level;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,8 +27,6 @@ public class LightScannerVanilla extends LightScannerBase {
     private final List<EntityType<?>> typesToCheck;
 
     public LightScannerVanilla() {
-        // typesToCheck = BuiltInRegistries.ENTITY_TYPE.getTags().filter((type) -> type.canSummon() && type.getCategory() == MobCategory.MONSTER).collect(Collectors.toList());
-
         typesToCheck = BuiltInRegistries.ENTITY_TYPE.getTags()
             .flatMap(pair -> pair.getSecond().stream())
             .filter(holder -> holder.value().canSummon() && holder.value().getCategory() == MobCategory.MONSTER)
@@ -88,12 +83,10 @@ public class LightScannerVanilla extends LightScannerBase {
         if (!checkCollision(pos, world))
             return 0;
 
-        final BlockState state = world.getBlockState(blockPos);
-        final Block block = state.getBlock();
         if (!Config.light_SimpleEntityCheck.get()) {
             boolean hasSpawnable = false;
             for (final EntityType<?> type : this.typesToCheck) {
-                if (block.isValidSpawn(state, world, blockPos, SpawnPlacements.Type.ON_GROUND, type)) {
+                if(SpawnPlacementTypes.ON_GROUND.isSpawnPositionOk(world, pos, type)){
                     hasSpawnable = true;
                     break;
                 }
@@ -102,7 +95,7 @@ public class LightScannerVanilla extends LightScannerBase {
             if (!hasSpawnable) {
                 return 0;
             }
-        } else if (!block.isValidSpawn(state, world, blockPos, SpawnPlacements.Type.ON_GROUND, EntityType.ZOMBIE)) {
+        } else if (!SpawnPlacementTypes.ON_GROUND.isSpawnPositionOk(world, pos, EntityType.ZOMBIE)) {
             return 0;
         }
 

@@ -7,8 +7,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.client.event.RenderTooltipEvent;
-// import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 
@@ -82,8 +81,8 @@ public class GuiHandler {
     }
 
     @SubscribeEvent
-    public void onClientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase != TickEvent.Phase.END || Minecraft.getInstance().player == null)
+    public void onClientTick(ClientTickEvent.Post event) {
+        if (Minecraft.getInstance().player == null)
             return;
         GuiRenderer.INSTANCE.tick();
     }

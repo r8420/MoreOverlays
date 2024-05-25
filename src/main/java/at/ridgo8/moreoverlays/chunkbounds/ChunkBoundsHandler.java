@@ -5,9 +5,8 @@ import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.TickEvent;
-// import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.minecraft.network.chat.Component;
@@ -60,7 +59,7 @@ public class ChunkBoundsHandler {
     }
 
     @SubscribeEvent
-    public void onOverlayRender(CustomizeGuiOverlayEvent.Chat event) {
+    public void onRenderOverlay(RenderGuiEvent.Post event) {
         if (regionInfo.isEmpty()) {
             return;
         }
@@ -76,9 +75,9 @@ public class ChunkBoundsHandler {
     }
 
     @SubscribeEvent
-    public void onClientTick(TickEvent.ClientTickEvent event) {
+    public void onClientTick(ClientTickEvent.Post event) {
         Minecraft instance = Minecraft.getInstance();
-        if (event.phase != TickEvent.Phase.END || instance.player == null) {
+        if (instance.player == null) {
             return;
         }
         if (ChunkBoundsHandler.getMode() != ChunkBoundsHandler.RenderMode.REGIONS) {
