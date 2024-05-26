@@ -40,13 +40,8 @@ public class MoreOverlays implements ModInitializer {
 
 		ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
             LightOverlayHandler.setEnabled(false);
-            if(GuiRenderer.INSTANCE.isEnabled()){
-                GuiRenderer.INSTANCE.toggleMode();
-            }
             ChunkBoundsHandler.setMode(RenderMode.NONE);
         });
-
-
 
 
 		Config.initialize();

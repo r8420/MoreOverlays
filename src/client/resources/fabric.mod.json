@@ -3,7 +3,7 @@
 	"id": "moreoverlays",
 	"version": "${version}",
 	"name": "MoreOverlays",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "This mod adds some of the overlays back from NEI",
 	"authors": [
 		"feldim2425",
 		"RiDGo8 / R8420"

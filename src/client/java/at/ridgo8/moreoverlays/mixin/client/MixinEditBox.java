@@ -1,5 +1,6 @@
 package at.ridgo8.moreoverlays.mixin.client;
 
+import at.ridgo8.moreoverlays.ClientRegistrationHandler;
 import at.ridgo8.moreoverlays.itemsearch.GuiRenderer;
 import at.ridgo8.moreoverlays.itemsearch.JeiModule;
 import net.minecraft.client.gui.components.EditBox;
@@ -16,7 +17,7 @@ public abstract class MixinEditBox {
     private void onClick(double d, double e, CallbackInfo cir) {
         EditBox textField = (EditBox) (Object) this;
         
-        if(JeiModule.getJEITextField() != null && textField.getClass() == JeiModule.getJEITextField().getClass()){
+        if(ClientRegistrationHandler.isJeiInstalled() && JeiModule.getJEITextField() != null && textField.getClass() == JeiModule.getJEITextField().getClass()){
             long now = System.currentTimeMillis();
             if (now - firstClick < 1000) {
                 GuiRenderer.INSTANCE.toggleMode();

@@ -1,15 +1,19 @@
 package at.ridgo8.moreoverlays.itemsearch;
 
+import at.ridgo8.moreoverlays.ClientRegistrationHandler;
+import at.ridgo8.moreoverlays.chunkbounds.ChunkBoundsHandler;
+import at.ridgo8.moreoverlays.chunkbounds.ChunkBoundsHandler.RenderMode;
+import at.ridgo8.moreoverlays.lightoverlay.LightOverlayHandler;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
-import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.client.Minecraft;
 
 public class GuiHandler {
 
     public static void init() {
-        if (FabricLoader.getInstance().isModLoaded("jei")) {
+        if (ClientRegistrationHandler.isJeiInstalled()) {
             registerEvents();
         }
     }
@@ -50,6 +54,13 @@ public class GuiHandler {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (Minecraft.getInstance().player == null) return;
             GuiRenderer.INSTANCE.tick();
+        });
+        
+        // World unload
+        ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
+            if(GuiRenderer.INSTANCE.isEnabled()){
+                GuiRenderer.INSTANCE.toggleMode();
+            }
         });
     }
 

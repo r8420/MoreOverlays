@@ -1,9 +1,13 @@
 package at.ridgo8.moreoverlays.itemsearch;
 
 import at.ridgo8.moreoverlays.MoreOverlays;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.MappingResolver;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 
 import java.lang.reflect.Field;
+
+import org.jetbrains.annotations.NotNull;
 
 public class GuiUtils {
 
@@ -12,16 +16,40 @@ public class GuiUtils {
 
     public static void initUtil() {
         try {
-            fieldLeft = AbstractContainerScreen.class.getDeclaredField("leftPos");
+            
+            fieldLeft = findField(AbstractContainerScreen.class, "leftPos");
             fieldLeft.setAccessible(true);
 
-            fieldTop = AbstractContainerScreen.class.getDeclaredField("topPos");
+            fieldTop = findField(AbstractContainerScreen.class, "topPos");
             fieldTop.setAccessible(true);
         } catch (NoSuchFieldException e) {
-            MoreOverlays.logger.error("Tried to load gui coordinate fields for reflection");
-            e.printStackTrace();
-            fieldTop = null;
-            fieldLeft = null;
+            try {
+                fieldLeft = findField(AbstractContainerScreen.class, "field_2776");
+                fieldLeft.setAccessible(true);
+    
+                fieldTop = findField(AbstractContainerScreen.class, "field_2800");
+                fieldTop.setAccessible(true);
+            } catch (NoSuchFieldException f) {
+                MoreOverlays.logger.error("Failed to load gui coordinate fields for reflection");
+                f.printStackTrace();
+                fieldTop = null;
+                fieldLeft = null;
+            }
+        }
+    }
+
+    public static <T> Field findField(@NotNull final Class<? super T> clazz, @NotNull final String fieldName) throws NoSuchFieldException {
+        try {
+            MappingResolver resolver = FabricLoader.getInstance().getMappingResolver();
+            String currentNamespace = resolver.getCurrentRuntimeNamespace();
+            String className = clazz.getName().replace('.', '/');
+            String mappedFieldName = resolver.mapFieldName(currentNamespace, className, fieldName, null);
+
+            Field f = clazz.getDeclaredField(mappedFieldName);
+            f.setAccessible(true);
+            return f;
+        } catch (Exception e) {
+            throw new NoSuchFieldException("Failed to find field: " + e.getMessage());
         }
     }
 
