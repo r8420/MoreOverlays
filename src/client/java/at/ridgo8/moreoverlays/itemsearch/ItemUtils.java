@@ -2,11 +2,16 @@ package at.ridgo8.moreoverlays.itemsearch;
 
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+
 import net.minecraft.nbt.ListTag;
+
+import at.ridgo8.moreoverlays.MoreOverlays;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -23,12 +28,8 @@ public final class ItemUtils {
             ItemStack stack1 = (ItemStack) ingredient;
             return ItemStack.isSameItem(stack, stack1) && JeiModule.areItemsEqualInterpreter(stack1, stack);
         } else if (ingredient instanceof EnchantmentInstance) {
-            ListTag tags;
-            if (stack.getItem() instanceof EnchantedBookItem) {
-                tags = EnchantedBookItem.getEnchantments(stack);
-            } else {
-                tags = stack.getEnchantmentTags();
-            }
+            ItemEnchantments tags;
+            tags = stack.getEnchantments();
             return getEnchantmentData(tags).stream().anyMatch((ench) -> ench.enchantment.equals(((EnchantmentInstance) ingredient).enchantment) &&
                     ench.level == ((EnchantmentInstance) ingredient).level);
         }
@@ -36,27 +37,23 @@ public final class ItemUtils {
         return false;
     }
 
-    public static Collection<EnchantmentInstance> getEnchantmentData(ListTag nbtList) {
+    public static Collection<EnchantmentInstance> getEnchantmentData(ItemEnchantments nbtList) {
         if (nbtList == null) {
             return Collections.emptySet();
         }
-
         Collection<EnchantmentInstance> enchantments = new HashSet<>();
-        for (Tag nbt : nbtList) {
-            if (nbt instanceof CompoundTag) {
-                CompoundTag nbttagcompound = (CompoundTag) nbt;
-                int id = nbttagcompound.getShort("id");
-                int level = nbttagcompound.getShort("lvl");
-                Enchantment enchantment = Enchantment.byId(id);
-                if (enchantment != null && level > 0) {
-                    enchantments.add(new EnchantmentInstance(enchantment, level));
-                }
+        for (Holder<Enchantment> nbt : nbtList.keySet()) {
+            int level = nbt.value().getMaxLevel();
+           
+            if (nbt.value() != null && level > 0) {
+                enchantments.add(new EnchantmentInstance(nbt.value(), level));
             }
         }
         return enchantments;
     }
 
     public static boolean matchNBT(ItemStack a, ItemStack b) {
-        return a.hasTag() == b.hasTag() && (!a.hasTag() || a.getTag().equals(b.getTag()));
+        MoreOverlays.logger.error(a.getTags());
+        return a.getTags() == b.getTags(); //TODO: work on
     }
 }

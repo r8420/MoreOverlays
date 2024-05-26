@@ -21,12 +21,6 @@ public class ChunkBoundsRenderer {
         RenderSystem.lineWidth((float) (double) Config.render_chunkLineWidth);
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
-
-        if (Minecraft.getInstance().options.graphicsMode().get() != GraphicsStatus.FABULOUS) {
-            RenderSystem.depthMask(false);
-            RenderSystem.enableCull();
-        } 
-
         final int h = player.level().getHeight();
         final int h0 = (int) player.getY();
         final int h1 = Math.min(h, h0 - 16);
@@ -95,12 +89,8 @@ public class ChunkBoundsRenderer {
 
         // restore render settings
         RenderSystem.depthMask(true);
-        if (Minecraft.getInstance().options.graphicsMode().get() != GraphicsStatus.FABULOUS) {
-            RenderSystem.disableCull();
-        } else {
-            RenderSystem.lineWidth(1.0F);
-            RenderSystem.enableBlend();
-        }
+        RenderSystem.lineWidth(1.0F);
+        RenderSystem.enableBlend();
     }
 
     public static void renderEdge(PoseStack matrixstack, double x, double z, double h3, double h, int color) {

@@ -7,7 +7,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import org.joml.Matrix4d;
 import net.minecraft.client.Camera;
-import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
@@ -88,11 +87,6 @@ public class LightOverlayRenderer implements ILightRenderer {
         RenderSystem.lineWidth((float) (double) Config.render_chunkLineWidth);
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
-        if (Minecraft.getInstance().options.graphicsMode().get() != GraphicsStatus.FABULOUS) {
-            RenderSystem.depthMask(false);
-            RenderSystem.enableCull();
-        }
-
         float ar = ((float) ((Config.render_spawnAColor >> 16) & 0xFF)) / 255F;
         float ag = ((float) ((Config.render_spawnAColor >> 8) & 0xFF)) / 255F;
         float ab = ((float) (Config.render_spawnAColor & 0xFF)) / 255F;
@@ -114,11 +108,7 @@ public class LightOverlayRenderer implements ILightRenderer {
         tess.end();
         // restore render settings
         RenderSystem.depthMask(true);
-        if (Minecraft.getInstance().options.graphicsMode().get() != GraphicsStatus.FABULOUS) {
-            RenderSystem.disableCull();
-        } else {
-            RenderSystem.lineWidth(1.0F);
-            RenderSystem.enableBlend();
-        }
+        RenderSystem.lineWidth(1.0F);
+        RenderSystem.enableBlend();
     }
 }
