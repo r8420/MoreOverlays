@@ -1,6 +1,5 @@
 package at.ridgo8.moreoverlays.chunkbounds;
 
-// import at.ridgo8.moreoverlays.MoreOverlays;
 import at.ridgo8.moreoverlays.config.Config;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -9,17 +8,13 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
-// import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import org.joml.Vector4d;
 
 public class ChunkBoundsRenderer {
-    // private final static ResourceLocation BLANK_TEX = new ResourceLocation(MoreOverlays.MOD_ID, "textures/blank.png");
 
     public static void renderOverlays(PoseStack matrixstack) {
         Player player = Minecraft.getInstance().player;
-        // Minecraft.getInstance().getTextureManager().bindForSetup(BLANK_TEX);
-
 
         RenderSystem.enableDepthTest();
         RenderSystem.disableBlend();

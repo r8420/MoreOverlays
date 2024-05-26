@@ -18,6 +18,9 @@
 	"entrypoints": {
 		"main": [
 			"at.ridgo8.moreoverlays.MoreOverlays"
+		],
+		"jei_mod_plugin": [
+			"at.ridgo8.moreoverlays.itemsearch.JeiModule"
 		]
 	},
 	"mixins": [

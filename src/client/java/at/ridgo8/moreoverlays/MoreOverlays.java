@@ -1,7 +1,9 @@
 package at.ridgo8.moreoverlays;
 
 import at.ridgo8.moreoverlays.chunkbounds.ChunkBoundsHandler;
+import at.ridgo8.moreoverlays.chunkbounds.ChunkBoundsHandler.RenderMode;
 import at.ridgo8.moreoverlays.config.Config;
+import at.ridgo8.moreoverlays.itemsearch.GuiRenderer;
 import at.ridgo8.moreoverlays.lightoverlay.LightOverlayHandler;
 
 import org.apache.logging.log4j.LogManager;
@@ -38,6 +40,10 @@ public class MoreOverlays implements ModInitializer {
 
 		ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
             LightOverlayHandler.setEnabled(false);
+            if(GuiRenderer.INSTANCE.isEnabled()){
+                GuiRenderer.INSTANCE.toggleMode();
+            }
+            ChunkBoundsHandler.setMode(RenderMode.NONE);
         });
 
 

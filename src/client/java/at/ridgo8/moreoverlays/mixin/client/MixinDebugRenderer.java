@@ -13,9 +13,6 @@ import at.ridgo8.moreoverlays.chunkbounds.ChunkBoundsRenderer;
 import at.ridgo8.moreoverlays.lightoverlay.LightOverlayHandler;
 import net.minecraft.client.renderer.MultiBufferSource;
 
-// import at.ridgo8.moreoverlays.chunkbounds.ChunkBoundsHandler;
-// import at.ridgo8.moreoverlays.chunkbounds.ChunkBoundsRenderer;
-// import at.ridgo8.moreoverlays.lightoverlay.LightOverlayHandler;
 import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.Minecraft;
 

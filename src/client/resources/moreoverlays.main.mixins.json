@@ -5,7 +5,8 @@
 	"client": [
 		"MixinDebugRenderer",
 		"MixinOnRenderTail",
-		"MixinOverlayRenderer"
+		"MixinOverlayRenderer",
+		"MixinEditBox"
 	],
 	"injectors": {
 		"defaultRequire": 1

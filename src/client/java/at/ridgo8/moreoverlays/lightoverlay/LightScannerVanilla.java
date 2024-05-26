@@ -4,23 +4,14 @@ import at.ridgo8.moreoverlays.api.lightoverlay.LightScannerBase;
 import at.ridgo8.moreoverlays.config.Config;
 import com.google.common.collect.Lists;
 
-// import net.minecraft.world.level.block.Block;
-// import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.MobCategory;
-// import net.minecraft.world.entity.MobSpawnType;
-// import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LightLayer;
-// import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.Level;
-// import net.minecraftforge.fml.ModList;
-// import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraft.core.registries.BuiltInRegistries;
-// import net.minecraft.server.level.ServerLevel;
-// import net.minecraft.util.RandomSource;
 
 import java.util.List;
 import java.util.stream.Collectors;

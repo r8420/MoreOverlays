@@ -1,7 +1,6 @@
 package at.ridgo8.moreoverlays.chunkbounds;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 
@@ -9,9 +8,6 @@ import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.reflect.Field;
-
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
 
 public class ChunkBoundsHandler {
@@ -41,31 +37,6 @@ public class ChunkBoundsHandler {
         mode = modes[(mode.ordinal() + 1) % modes.length];
         Minecraft.getInstance().player.displayClientMessage(Component.nullToEmpty(ChatFormatting.RED + "Chunk Border Overlay: " + mode.name()), true);
     }
-
-    // @SubscribeEvent
-    // public void renderWorldLastEvent(RenderLevelStageEvent event) {
-    //     if(!event.getStage().equals(RenderLevelStageEvent.Stage.AFTER_PARTICLES)) return;
-
-    //     if (mode != RenderMode.NONE && Minecraft.getInstance().options.graphicsMode().get() != GraphicsStatus.FABULOUS) {
-    //         ChunkBoundsRenderer.renderOverlays(event.getPoseStack());
-    //     }
-    // }
-
-    // @SubscribeEvent
-    // public void onOverlayRender(CustomizeGuiOverlayEvent.DebugText event) {
-    //     if (regionInfo.isEmpty()) {
-    //         return;
-    //     }
-    //     Minecraft mc = Minecraft.getInstance();
-    //     if (mc.getDebugOverlay().showDebugScreen()) {
-    //         return;
-    //     }
-
-    //     int y = 0;
-    //     for (String text : regionInfo) {
-    //         event.getGuiGraphics().drawString(mc.font, text, 10, y += 10, 0xFFFFFF);
-    //     }
-    // }
     
 
     public static void updateRegionInfo(){

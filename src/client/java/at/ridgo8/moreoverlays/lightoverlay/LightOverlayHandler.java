@@ -6,7 +6,6 @@ import at.ridgo8.moreoverlays.api.lightoverlay.ILightScanner;
 import at.ridgo8.moreoverlays.api.lightoverlay.LightOverlayReloadHandlerEvent;
 import at.ridgo8.moreoverlays.config.Config;
 import net.minecraft.ChatFormatting;
-// import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.Minecraft;
 
 import net.minecraft.network.chat.Component;
@@ -20,10 +19,6 @@ public class LightOverlayHandler {
     private static boolean enabled = false;
     public static ILightRenderer renderer = null;
     public static ILightScanner scanner = null;
-
-    // public static void init() {
-    //     MinecraftForge.EVENT_BUS.register(new LightOverlayHandler());
-    // }
 
     public static boolean isEnabled() {
         return enabled;
@@ -53,7 +48,6 @@ public class LightOverlayHandler {
 
     private static void reloadHandlerInternal() {
         LightOverlayReloadHandlerEvent event = new LightOverlayReloadHandlerEvent(Config.light_IgnoreSpawnList, LightOverlayRenderer.class, LightScannerVanilla.class);
-        // MinecraftForge.EVENT_BUS.post(event);
 
         if (renderer == null || renderer.getClass() != event.getRenderer()) {
             try {

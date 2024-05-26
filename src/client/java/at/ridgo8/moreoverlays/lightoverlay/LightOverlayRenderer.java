@@ -1,6 +1,5 @@
 package at.ridgo8.moreoverlays.lightoverlay;
 
-import at.ridgo8.moreoverlays.MoreOverlays;
 import at.ridgo8.moreoverlays.api.lightoverlay.ILightRenderer;
 import at.ridgo8.moreoverlays.api.lightoverlay.ILightScanner;
 import at.ridgo8.moreoverlays.config.Config;
@@ -13,7 +12,6 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.core.BlockPos;
 import org.apache.commons.lang3.tuple.Pair;
@@ -21,8 +19,6 @@ import org.joml.Vector4d;
 
 
 public class LightOverlayRenderer implements ILightRenderer {
-
-    // private final static ResourceLocation BLANK_TEX = new ResourceLocation(MoreOverlays.MOD_ID, "textures/blank.png");
 
     private static Tesselator tess;
     private static BufferBuilder renderer;
@@ -87,8 +83,6 @@ public class LightOverlayRenderer implements ILightRenderer {
      }
 
     public void renderOverlays(ILightScanner scanner, PoseStack matrixstack) {
-        // Minecraft.getInstance().getTextureManager().bindForSetup(BLANK_TEX);
-
         RenderSystem.enableDepthTest();
         RenderSystem.disableBlend();
         RenderSystem.lineWidth((float) (double) Config.render_chunkLineWidth);
