@@ -31,7 +31,7 @@ public class ConfigScreen extends Screen {
     private String txtDone = "";
 
     public ConfigScreen(Screen modListScreen, ForgeConfigSpec spec, String modId) {
-        super(Component.translatable("gui.config." + modId + ".tile"));
+        super(Component.translatable("gui.config." + modId + ".title"));
         this.modListScreen = modListScreen;
         this.configSpec = spec;
         this.modId = modId;
