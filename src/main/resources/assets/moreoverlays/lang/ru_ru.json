@@ -3,11 +3,41 @@
   "key.moreoverlays.chunkbounds.desc": "Показать/Спрятать границы чанков",
   "key.moreoverlays.lightoverlay.desc": "Показать/Спрятать метки темноты",
 
-  "gui.config.moreoverlays.tile": "Настройки More Overlays Updated",
+  "gui.config.moreoverlays.title": "Настройки More Overlays Updated",
+  "gui.config.moreoverlays.reset_config": "Сброс настроек",
+  "gui.config.moreoverlays.undo": "Отменить измен.",
+  "gui.config.moreoverlays.save": "Сохранить",
 
   "config.moreoverlays.category.lightoverlay": "Метки темноты",
   "config.moreoverlays.category.chunkbounds": "Границы чанков",
   "config.moreoverlays.category.itemsearch": "Поиск предметов",
   "config.moreoverlays.category.searchoverlay": "Поиск предметов",
-  "config.moreoverlays.category.rendersettings": "Настройки графики"
+  "config.moreoverlays.category.rendersettings": "Настройки графики",
+
+  "config.moreoverlays.lightoverlay.uprange": "Верх. диапазон",
+  "config.moreoverlays.lightoverlay.downrange": "Нижн. диапазон",
+  "config.moreoverlays.lightoverlay.hrange": "Горизонт. диапазон",
+  "config.moreoverlays.lightoverlay.ignorelayer": "Игнор. слой",
+  "config.moreoverlays.lightoverlay.ignorespawnlist": "Игнор. списка",
+  "config.moreoverlays.lightoverlay.simplecheck": "Простая проверка",
+  "config.moreoverlays.lightoverlay.savelevel": "Безоп. уровень св.",
+  "config.moreoverlays.lightoverlay.finishedmigration": "Миграция 1.18",
+
+  "config.moreoverlays.chunkbounds.radius": "Радиус границы",
+  "config.moreoverlays.chunkbounds.middle": "Показать центр",
+
+  "config.moreoverlays.rendersettings.chunk_edge_color": "Цвет края чанка",
+  "config.moreoverlays.rendersettings.chunk_grid_color": "Цвет сетки",
+  "config.moreoverlays.rendersettings.chunk_mid_color": "Цвет центра",
+  "config.moreoverlays.rendersettings.chunk_line_width": "Ширина линии",
+  "config.moreoverlays.rendersettings.spawn_always_color": "Цвет спавна",
+  "config.moreoverlays.rendersettings.spawn_night_color": "Цвет ноч. спавн",
+  "config.moreoverlays.rendersettings.spawn_line_width": "Шир. линии спавна",
+
+  "config.moreoverlays.searchoverlay.search_enabled": "Вкл. поиск",
+  "config.moreoverlays.searchoverlay.custom_search": "Свой поиск",
+  "config.moreoverlays.searchoverlay.search_tooltip": "Поиск подсказки",
+  "config.moreoverlays.searchoverlay.search_box_color": "Цвет поля поиска",
+  "config.moreoverlays.searchoverlay.search_slot_color": "Цвет слота",
+  "config.moreoverlays.searchoverlay.search_slot_alpha": "Прозр. слота"
 }
