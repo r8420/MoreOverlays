@@ -32,11 +32,11 @@ public class KeyBindings {
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent(receiveCanceled = true)
     public void onKeyEvent(InputEvent.KeyInputEvent event) {
-        if (lightOverlay.isDown()) {
+        if (lightOverlay.consumeClick()) {
             LightOverlayHandler.setEnabled(!LightOverlayHandler.isEnabled());
         }
 
-        if (chunkBounds.isDown()) {
+        if (chunkBounds.consumeClick()) {
             ChunkBoundsHandler.toggleMode();
         }
     }
