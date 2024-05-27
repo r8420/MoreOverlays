@@ -20,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.phys.Vec2;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -183,6 +184,10 @@ public class GuiRenderer {
         } else {
             views.clear();
         }
+
+        List<ItemStack> filteredIngredients = JeiModule.filter.getFilteredIngredients(VanillaTypes.ITEM_STACK);
+        if(filteredIngredients.size() > Config.search_maxResults.get()) return;
+
         for (Slot slot : container.getMenu().slots) {
             SlotViewWrapper wrapper;
             if (!views.containsKey(slot)) {
@@ -192,14 +197,14 @@ public class GuiRenderer {
                 wrapper = views.get(slot);
             }
 
-            wrapper.setEnableOverlay(wrapper.getView().canSearch() && !isSearchedItem(slot.getItem()));
+            wrapper.setEnableOverlay(wrapper.getView().canSearch() && !isSearchedItem(slot.getItem(), filteredIngredients));
         }
     }
 
-    private boolean isSearchedItem(ItemStack stack) {
+    private boolean isSearchedItem(ItemStack stack,List<ItemStack> filteredIngredients) {
         if (emptyFilter) return true;
         else if (stack.isEmpty()) return false;
-        for (Object ingredient : JeiModule.filter.getFilteredIngredients(VanillaTypes.ITEM_STACK)) {
+        for (Object ingredient : filteredIngredients) {
             if (ItemUtils.ingredientMatches(ingredient, stack)) {
                 return true;
             }
