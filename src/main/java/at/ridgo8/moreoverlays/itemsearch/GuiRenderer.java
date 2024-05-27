@@ -17,8 +17,10 @@ import com.mojang.blaze3d.platform.Lighting;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.phys.Vec2;
 
+import java.util.Locale;
 import java.util.Map;
 
 public class GuiRenderer {
@@ -198,6 +200,12 @@ public class GuiRenderer {
                 return true;
             }
         }
+
+        if(Config.search_searchTooltip.get() && stack.getTooltipLines(null, TooltipFlag.Default.NORMAL).stream()
+                                    .anyMatch(tip -> tip.getString().toLowerCase(Locale.ROOT).contains(JeiModule.getJEITextField().getValue().toLowerCase()))){
+                                        return true;
+                                    }
+        
         return Config.search_searchCustom.get() && stack.getDisplayName().getString().toLowerCase().contains(JeiModule.getJEITextField().getValue().toLowerCase());
     }
 
