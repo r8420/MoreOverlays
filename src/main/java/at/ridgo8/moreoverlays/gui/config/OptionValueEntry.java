@@ -60,8 +60,12 @@ public abstract class OptionValueEntry<V> extends ConfigOptionList.OptionEntry {
         } else {
             btnReset.active = false;
         }
-
-        this.name = this.value.getPath().get(this.value.getPath().size() - 1);
+        final String translationKey = "config.moreoverlays." + getTranslationKey().toLowerCase();
+        if(I18n.hasKey(translationKey)){
+            this.name = I18n.format(translationKey);
+        } else{
+            this.name = this.value.getPath().get(this.value.getPath().size() - 1);
+        }
 
         String[] lines = null;
         if (this.spec.getComment() != null) {
@@ -78,6 +82,13 @@ public abstract class OptionValueEntry<V> extends ConfigOptionList.OptionEntry {
         }
 
         this.updateValue(this.value.get());
+    }
+
+    private String getTranslationKey() {
+        // This method generates the translation key based on the config path
+        // Assume that your config path segments are connected with dots (.)
+        // Example path: ["lightoverlay", "uprange"] becomes "lightoverlay.uprange"
+        return String.join(".", this.value.getPath());
     }
 
     @Override
