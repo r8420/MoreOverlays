@@ -14,11 +14,13 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.util.ITooltipFlag.TooltipFlags;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.vector.Vector2f;
 import org.lwjgl.opengl.GL11;
 
+import java.util.Locale;
 import java.util.Map;
 
 public class GuiRenderer {
@@ -212,6 +214,11 @@ public class GuiRenderer {
                 return true;
             }
         }
+        if(Config.search_searchTooltip.get() && stack.getTooltip(Minecraft.getInstance().player, TooltipFlags.NORMAL).stream()
+                                    .anyMatch(tip -> tip.getString().toLowerCase(Locale.ROOT).contains(JeiModule.getJEITextField().getText().toLowerCase()))){
+                                        return true;
+                                    }
+        
         return Config.search_searchCustom.get() && stack.getDisplayName().getString().toLowerCase().contains(JeiModule.getJEITextField().getText().toLowerCase());
     }
 
