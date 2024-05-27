@@ -5,6 +5,7 @@ import at.ridgo8.moreoverlays.api.itemsearch.SlotViewWrapper;
 import at.ridgo8.moreoverlays.config.Config;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
@@ -192,8 +193,11 @@ public class GuiRenderer {
         } else {
             views.clear();
         }
+
+        ImmutableList<Object> filteredIngredients = JeiModule.filter.getFilteredIngredients();
+        if(filteredIngredients.size() > Config.search_maxResults.get()) return;
+
         for (Slot slot : container.getContainer().inventorySlots) {
-            //System.out.println(slot);
             SlotViewWrapper wrapper;
             if (!views.containsKey(slot)) {
                 wrapper = new SlotViewWrapper(SlotHandler.INSTANCE.getViewSlot(container, slot));
@@ -202,14 +206,14 @@ public class GuiRenderer {
                 wrapper = views.get(slot);
             }
 
-            wrapper.setEnableOverlay(wrapper.getView().canSearch() && !isSearchedItem(slot.getStack()));
+            wrapper.setEnableOverlay(wrapper.getView().canSearch() && !isSearchedItem(slot.getStack(), filteredIngredients));
         }
     }
 
-    private boolean isSearchedItem(ItemStack stack) {
+    private boolean isSearchedItem(ItemStack stack,ImmutableList<Object> filteredIngredients) {
         if (emptyFilter) return true;
         else if (stack.isEmpty()) return false;
-        for (Object ingredient : JeiModule.filter.getFilteredIngredients()) {
+        for (Object ingredient : filteredIngredients) {
             if (ItemUtils.ingredientMatches(ingredient, stack)) {
                 return true;
             }

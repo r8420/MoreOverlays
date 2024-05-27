@@ -36,7 +36,8 @@
 
   "config.moreoverlays.searchoverlay.search_enabled": "Enable Search",
   "config.moreoverlays.searchoverlay.custom_search": "Search Custom",
-  "config.moreoverlays.searchoverlay.search_tooltip": "Search Tooltip ",
+  "config.moreoverlays.searchoverlay.search_tooltip": "Search Tooltip",
+  "config.moreoverlays.searchoverlay.search_max_results": "Max Search Results",
   "config.moreoverlays.searchoverlay.search_box_color": "Search Box Color",
   "config.moreoverlays.searchoverlay.search_slot_color": "Slot Color",
   "config.moreoverlays.searchoverlay.search_slot_alpha": "Slot Transparency"
