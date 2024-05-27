@@ -53,7 +53,7 @@ public class ChunkBoundsHandler {
     public void renderWorldLastEvent(RenderLevelStageEvent event) {
         if(!event.getStage().equals(RenderLevelStageEvent.Stage.AFTER_PARTICLES)) return;
 
-        if (mode != RenderMode.NONE && Minecraft.getInstance().options.graphicsMode().get() != GraphicsStatus.FABULOUS) {
+        if (mode != RenderMode.NONE) {
             ChunkBoundsRenderer.renderOverlays(event.getPoseStack());
         }
     }

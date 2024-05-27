@@ -91,7 +91,7 @@ public class LightOverlayHandler {
     public void renderWorldLastEvent(RenderLevelStageEvent event) {
         if(!event.getStage().equals(RenderLevelStageEvent.Stage.AFTER_PARTICLES)) return;
 
-        if (enabled &&  Minecraft.getInstance().options.graphicsMode().get() != GraphicsStatus.FABULOUS) {
+        if (enabled) {
             renderer.renderOverlays(scanner, event.getPoseStack());
         }
     }
