@@ -46,7 +46,7 @@ public final class ItemUtils {
             int level = nbt.value().getMaxLevel();
            
             if (nbt.value() != null && level > 0) {
-                enchantments.add(new EnchantmentInstance(nbt.value(), level));
+                enchantments.add(new EnchantmentInstance(nbt, level));
             }
         }
         return enchantments;

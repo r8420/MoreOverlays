@@ -97,7 +97,6 @@ public class ChunkBoundsRenderer {
         Matrix4d matrix4d = new Matrix4d();
         matrixstack.last().pose().get(matrix4d);
         Tesselator tess = Tesselator.getInstance();
-        BufferBuilder bufferBuilder = tess.getBuilder();
         Minecraft minecraft = Minecraft.getInstance();
 
         Camera camera = minecraft.gameRenderer.getMainCamera();
@@ -112,7 +111,7 @@ public class ChunkBoundsRenderer {
 
         z -= cameraZ;
 
-        bufferBuilder.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+        BufferBuilder bufferBuilder = tess.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
 
         float r = ((float) ((color >> 16) & 0xFF)) / 255F;
         float g = ((float) ((color >> 8) & 0xFF)) / 255F;
@@ -121,14 +120,16 @@ public class ChunkBoundsRenderer {
         drawVertex(bufferBuilder, matrix4d, x, h3, z, r, g, b);
         drawVertex(bufferBuilder, matrix4d, x, h, z, r, g, b);
 
-        tess.end();
+        MeshData meshData = bufferBuilder.build();
+        if (meshData != null) {
+            BufferUploader.drawWithShader(meshData);
+        }
     }
 
     public static void renderGrid(PoseStack matrixstack, float x0, float y0, float z0, float x1, float y1, float z1, float step, int color) {
         Matrix4d matrix4d = new Matrix4d();
         matrixstack.last().pose().get(matrix4d);
         Tesselator tess = Tesselator.getInstance();
-        BufferBuilder renderer = tess.getBuilder();
         Minecraft minecraft = Minecraft.getInstance();
 
         Camera camera = minecraft.gameRenderer.getMainCamera();
@@ -137,7 +138,7 @@ public class ChunkBoundsRenderer {
         double cameraZ = camera.getPosition().z;
 
         
-        renderer.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+        BufferBuilder renderer = tess.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
         float r = ((float) ((color >> 16) & 0xFF)) / 255F;
         float g = ((float) ((color >> 8) & 0xFF)) / 255F;
         float b = ((float) (color & 0xFF)) / 255F;
@@ -175,11 +176,15 @@ public class ChunkBoundsRenderer {
             drawVertex(renderer, matrix4d, x1 - cameraX, y0 - cameraY, z - cameraZ, r, g, b);
             drawVertex(renderer, matrix4d, x1 - cameraX, y1 - cameraY, z - cameraZ, r, g, b);
         }
-        tess.end();
+
+        MeshData meshData = renderer.build();
+        if (meshData != null) {
+            BufferUploader.drawWithShader(meshData);
+        }
     }
 
     private static void drawVertex(BufferBuilder renderer, Matrix4d matrix, double x, double y, double z, float r, float g, float b) {
         Vector4d vector4d = matrix.transform(new Vector4d(x, y, z, 1.0D));
-        renderer.vertex(vector4d.x(), vector4d.y(), vector4d.z()).color(r, g, b, 1).endVertex();
+        renderer.addVertex((float)vector4d.x(), (float)vector4d.y(), (float)vector4d.z()).setColor(r, g, b, 1);
     }
 }

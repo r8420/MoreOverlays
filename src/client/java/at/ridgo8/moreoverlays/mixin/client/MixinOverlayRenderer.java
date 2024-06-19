@@ -3,6 +3,7 @@ package at.ridgo8.moreoverlays.mixin.client;
 
 import java.lang.reflect.Field;
 
+import net.minecraft.client.DeltaTracker;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -20,7 +21,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 @Mixin(Gui.class)
 public class MixinOverlayRenderer {
     @Inject(at = @At("TAIL"), method = "render")
-    private void onRender(GuiGraphics guiGraphics, float f, CallbackInfo ci) {
+    private void onRender(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci) {
         Minecraft mc = Minecraft.getInstance();
         try {
             if (mc.getDebugOverlay().showDebugScreen()) {
