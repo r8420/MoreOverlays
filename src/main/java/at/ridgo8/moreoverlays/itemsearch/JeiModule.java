@@ -63,6 +63,6 @@ public class JeiModule implements IModPlugin {
     @Override
     @Nonnull
     public ResourceLocation getPluginUid() {
-        return new ResourceLocation(MoreOverlays.MOD_ID, "jei_module");
+        return ResourceLocation.fromNamespaceAndPath(MoreOverlays.MOD_ID, "jei_module");
     }
 }

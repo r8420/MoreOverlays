@@ -7,6 +7,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import net.minecraft.world.item.Item;
 import org.joml.Matrix4f;
 import mezz.jei.api.constants.VanillaTypes;
 import net.minecraft.client.Minecraft;
@@ -85,7 +86,6 @@ public class GuiRenderer {
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
         Tesselator tess = Tesselator.getInstance();
-        BufferBuilder renderer = tess.getBuilder();
 
         float x = textField.getX() - 2;
         float y = textField.getY() - 4;
@@ -96,28 +96,31 @@ public class GuiRenderer {
         float g = ((float) ((Config.search_searchBoxColor.get() >> 8) & 0xFF)) / 255F;
         float b = ((float) (Config.search_searchBoxColor.get() & 0xFF)) / 255F;
 
-        renderer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        renderer.vertex(matrix4f, x + width + FRAME_RADIUS, y - FRAME_RADIUS, 1000).color(r, g, b, 1F).endVertex();
-        renderer.vertex(matrix4f, x - FRAME_RADIUS, y - FRAME_RADIUS, 1000).color(r, g, b, 1F).endVertex();
-        renderer.vertex(matrix4f, x - FRAME_RADIUS, y, 1000).color(r, g, b, 1F).endVertex();
-        renderer.vertex(matrix4f, x + width + FRAME_RADIUS, y, 1000).color(r, g, b, 1F).endVertex();
+        BufferBuilder renderer = tess.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        renderer.addVertex(matrix4f, x + width + FRAME_RADIUS, y - FRAME_RADIUS, 1000).setColor(r, g, b, 1F);
+        renderer.addVertex(matrix4f, x - FRAME_RADIUS, y - FRAME_RADIUS, 1000).setColor(r, g, b, 1F);
+        renderer.addVertex(matrix4f, x - FRAME_RADIUS, y, 1000).setColor(r, g, b, 1F);
+        renderer.addVertex(matrix4f, x + width + FRAME_RADIUS, y, 1000).setColor(r, g, b, 1F);
 
-        renderer.vertex(matrix4f, x, y, 1000).color(r, g, b, 1F).endVertex();
-        renderer.vertex(matrix4f, x - FRAME_RADIUS, y, 1000).color(r, g, b, 1F).endVertex();
-        renderer.vertex(matrix4f, x - FRAME_RADIUS, y + height, 1000).color(r, g, b, 1F).endVertex();
-        renderer.vertex(matrix4f, x, y + height, 1000).color(r, g, b, 1F).endVertex();
+        renderer.addVertex(matrix4f, x, y, 1000).setColor(r, g, b, 1F);
+        renderer.addVertex(matrix4f, x - FRAME_RADIUS, y, 1000).setColor(r, g, b, 1F);
+        renderer.addVertex(matrix4f, x - FRAME_RADIUS, y + height, 1000).setColor(r, g, b, 1F);
+        renderer.addVertex(matrix4f, x, y + height, 1000).setColor(r, g, b, 1F);
 
-        renderer.vertex(matrix4f, x + width + FRAME_RADIUS, y + height, 1000).color(r, g, b, 1F).endVertex();
-        renderer.vertex(matrix4f, x - FRAME_RADIUS, y + height, 1000).color(r, g, b, 1F).endVertex();
-        renderer.vertex(matrix4f, x - FRAME_RADIUS, y + height + FRAME_RADIUS, 1000).color(r, g, b, 1F).endVertex();
-        renderer.vertex(matrix4f, x + width + FRAME_RADIUS, y + height + FRAME_RADIUS, 1000).color(r, g, b, 1F).endVertex();
+        renderer.addVertex(matrix4f, x + width + FRAME_RADIUS, y + height, 1000).setColor(r, g, b, 1F);
+        renderer.addVertex(matrix4f, x - FRAME_RADIUS, y + height, 1000).setColor(r, g, b, 1F);
+        renderer.addVertex(matrix4f, x - FRAME_RADIUS, y + height + FRAME_RADIUS, 1000).setColor(r, g, b, 1F);
+        renderer.addVertex(matrix4f, x + width + FRAME_RADIUS, y + height + FRAME_RADIUS, 1000).setColor(r, g, b, 1F);
 
-        renderer.vertex(matrix4f, x + width + FRAME_RADIUS, y, 1000).color(r, g, b, 1F).endVertex();
-        renderer.vertex(matrix4f, x + width, y, 1000).color(r, g, b, 1F).endVertex();
-        renderer.vertex(matrix4f, x + width, y + height, 1000).color(r, g, b, 1F).endVertex();
-        renderer.vertex(matrix4f, x + width + FRAME_RADIUS, y + height, 1000).color(r, g, b, 1F).endVertex();
+        renderer.addVertex(matrix4f, x + width + FRAME_RADIUS, y, 1000).setColor(r, g, b, 1F);
+        renderer.addVertex(matrix4f, x + width, y, 1000).setColor(r, g, b, 1F);
+        renderer.addVertex(matrix4f, x + width, y + height, 1000).setColor(r, g, b, 1F);
+        renderer.addVertex(matrix4f, x + width + FRAME_RADIUS, y + height, 1000).setColor(r, g, b, 1F);
 
-        tess.end();
+        MeshData meshData = renderer.build();
+        if (meshData != null) {
+            BufferUploader.drawWithShader(meshData);
+        }
 
         RenderSystem.disableBlend();
         RenderSystem.enableDepthTest();
@@ -139,13 +142,12 @@ public class GuiRenderer {
             return;
 
         Tesselator tess = Tesselator.getInstance();
-        BufferBuilder renderer = tess.getBuilder();
 
         RenderSystem.enableBlend();
 
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
-        renderer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        BufferBuilder renderer = tess.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
         float r = ((float) ((Config.search_filteredSlotColor.get() >> 16) & 0xFF)) / 255F;
         float g = ((float) ((Config.search_filteredSlotColor.get() >> 8) & 0xFF)) / 255F;
@@ -157,15 +159,17 @@ public class GuiRenderer {
                 Vec2 posvec = slot.getValue().getView().getRenderPos(guiOffsetX, guiOffsetY);
                 float px = posvec.x;
                 float py = posvec.y;
-                renderer.vertex(px + 16 + guiOffsetX, py + guiOffsetY, OVERLAY_ZLEVEL).color(r, g, b, a).endVertex();
-                renderer.vertex(px + guiOffsetX, py + guiOffsetY, OVERLAY_ZLEVEL).color(r, g, b, a).endVertex();
-                renderer.vertex(px + guiOffsetX, py + 16 + guiOffsetY, OVERLAY_ZLEVEL).color(r, g, b, a).endVertex();
-                renderer.vertex(px + 16 + guiOffsetX, py + 16 + guiOffsetY, OVERLAY_ZLEVEL).color(r, g, b, a).endVertex();
+                renderer.addVertex(px + 16 + guiOffsetX, py + guiOffsetY, OVERLAY_ZLEVEL).setColor(r, g, b, a);
+                renderer.addVertex(px + guiOffsetX, py + guiOffsetY, OVERLAY_ZLEVEL).setColor(r, g, b, a);
+                renderer.addVertex(px + guiOffsetX, py + 16 + guiOffsetY, OVERLAY_ZLEVEL).setColor(r, g, b, a);
+                renderer.addVertex(px + 16 + guiOffsetX, py + 16 + guiOffsetY, OVERLAY_ZLEVEL).setColor(r, g, b, a);
             }
         }
 
-        tess.end();
-
+        MeshData meshData = renderer.build();
+        if (meshData != null) {
+            BufferUploader.drawWithShader(meshData);
+        }
 
         RenderSystem.disableBlend();
     }
@@ -206,12 +210,23 @@ public class GuiRenderer {
             }
         }
 
-        if(Config.search_searchTooltip.get() && stack.getTooltipLines(null, TooltipFlag.Default.NORMAL).stream()
-                                    .anyMatch(tip -> tip.getString().toLowerCase(Locale.ROOT).contains(JeiModule.getJEITextField().getValue().toLowerCase()))){
-                                        return true;
-                                    }
-        
-        return Config.search_searchCustom.get() && stack.getDisplayName().getString().toLowerCase().contains(JeiModule.getJEITextField().getValue().toLowerCase());
+        return matchesTooltipAndDisplayName(stack);
+    }
+
+    private boolean matchesTooltipAndDisplayName(ItemStack stack) {
+        String searchString = JeiModule.getJEITextField().getValue().toLowerCase(Locale.ROOT);
+        String[] searchWords = searchString.split(" "); // Split the search string into words
+
+        // Check tooltips for all words presence
+        return stack.getTooltipLines(Item.TooltipContext.of(Minecraft.getInstance().level), Minecraft.getInstance().player, TooltipFlag.Default.NORMAL)
+                .stream()
+                .anyMatch(tip -> {
+                    String tipLower = tip.getString().toLowerCase(Locale.ROOT);
+
+                    String displayNameLower = stack.getDisplayName().getString().toLowerCase(Locale.ROOT);
+                    // Check if all search words are in the tooltip text or display name text
+                    return java.util.Arrays.stream(searchWords).allMatch(tipLower::contains) || java.util.Arrays.stream(searchWords).allMatch(displayNameLower::contains);
+                });
     }
 
     public void tick() {

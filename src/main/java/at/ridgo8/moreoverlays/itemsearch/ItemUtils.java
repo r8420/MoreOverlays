@@ -29,11 +29,6 @@ public final class ItemUtils {
         if (ingredient instanceof ItemStack) {
             ItemStack stack1 = (ItemStack) ingredient;
             return ItemStack.isSameItem(stack, stack1) && JeiModule.areItemsEqualInterpreter(stack1, stack);
-        } else if (ingredient instanceof EnchantmentInstance) {
-            ItemEnchantments tags;
-            tags = stack.getEnchantments();
-            return getEnchantmentData(tags).stream().anyMatch((ench) -> ench.enchantment.equals(((EnchantmentInstance) ingredient).enchantment) &&
-                    ench.level == ((EnchantmentInstance) ingredient).level);
         }
 
         return false;
@@ -48,7 +43,7 @@ public final class ItemUtils {
             int level = nbt.value().getMaxLevel();
            
             if (nbt.value() != null && level > 0) {
-                enchantments.add(new EnchantmentInstance(nbt.value(), level));
+                enchantments.add(new EnchantmentInstance(nbt, level));
             }
         }
         return enchantments;

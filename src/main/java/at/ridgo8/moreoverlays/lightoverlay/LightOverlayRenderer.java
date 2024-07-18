@@ -22,7 +22,7 @@ import org.joml.Vector4d;
 
 public class LightOverlayRenderer implements ILightRenderer {
 
-    private final static ResourceLocation BLANK_TEX = new ResourceLocation(MoreOverlays.MOD_ID, "textures/blank.png");
+    private final static ResourceLocation BLANK_TEX = ResourceLocation.fromNamespaceAndPath(MoreOverlays.MOD_ID, "textures/blank.png");
 
     private static Tesselator tess;
     private static BufferBuilder renderer;
@@ -30,7 +30,7 @@ public class LightOverlayRenderer implements ILightRenderer {
 
     public LightOverlayRenderer() {
         tess = Tesselator.getInstance();
-        renderer = tess.getBuilder();
+        renderer = tess.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
         minecraft = Minecraft.getInstance();
     }
 
@@ -83,7 +83,7 @@ public class LightOverlayRenderer implements ILightRenderer {
 
     private static void drawVertex(Matrix4d matrix, double x, double y, double z, float r, float g, float b) {
         Vector4d vector4d = matrix.transform(new Vector4d(x, y, z, 1.0D));
-        renderer.vertex(vector4d.x(), vector4d.y(), vector4d.z()).color(r, g, b, 1).endVertex();
+        renderer.addVertex((float)vector4d.x(), (float)vector4d.y(), (float)vector4d.z()).setColor(r, g, b, 1);
      }
 
     public void renderOverlays(ILightScanner scanner, PoseStack matrixstack) {
@@ -91,7 +91,7 @@ public class LightOverlayRenderer implements ILightRenderer {
 
         RenderSystem.enableDepthTest();
         RenderSystem.disableBlend();
-        RenderSystem.lineWidth((float) (double) Config.render_chunkLineWidth.get());
+        RenderSystem.lineWidth(Config.render_chunkLineWidth.get().floatValue());
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
         if (Minecraft.getInstance().options.graphicsMode().get() != GraphicsStatus.FABULOUS) {
@@ -107,7 +107,7 @@ public class LightOverlayRenderer implements ILightRenderer {
         float ng = ((float) ((Config.render_spawnNColor.get() >> 8) & 0xFF)) / 255F;
         float nb = ((float) (Config.render_spawnNColor.get() & 0xFF)) / 255F;
 
-        renderer.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+        renderer = tess.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
         for (Pair<BlockPos, Byte> entry : scanner.getLightModes()) {
             Byte mode = entry.getValue();
             if (mode == null || mode == 0)
@@ -117,7 +117,12 @@ public class LightOverlayRenderer implements ILightRenderer {
             else if (mode == 2)
                 renderCross(matrixstack, entry.getKey(), ar, ag, ab);
         }
-        tess.end();
+
+        MeshData meshData = renderer.build();
+        if (meshData != null) {
+            BufferUploader.drawWithShader(meshData);
+        }
+
         // restore render settings
         RenderSystem.depthMask(true);
         if (Minecraft.getInstance().options.graphicsMode().get() != GraphicsStatus.FABULOUS) {
