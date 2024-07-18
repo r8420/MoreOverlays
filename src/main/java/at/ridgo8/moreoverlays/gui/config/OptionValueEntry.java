@@ -61,8 +61,12 @@ public abstract class OptionValueEntry<V> extends ConfigOptionList.OptionEntry {
         } else {
             btnReset.active = false;
         }
-
-        this.name = this.value.getPath().get(this.value.getPath().size() - 1);
+        final String translationKey = "config.moreoverlays." + getTranslationKey().toLowerCase();
+        if(I18n.exists(translationKey)){
+            this.name = I18n.get(translationKey);
+        } else{
+            this.name = this.value.getPath().get(this.value.getPath().size() - 1);
+        }
 
         String[] lines = null;
         if (this.spec.getComment() != null) {
@@ -81,9 +85,15 @@ public abstract class OptionValueEntry<V> extends ConfigOptionList.OptionEntry {
         this.updateValue(this.value.get());
     }
 
+    private String getTranslationKey() {
+        // This method generates the translation key based on the config path
+        // Assume that your config path segments are connected with dots (.)
+        // Example path: ["lightoverlay", "uprange"] becomes "lightoverlay.uprange"
+        return String.join(".", this.value.getPath());
+    }
+
     @Override
-    protected void renderControls(GuiGraphics guiGraphics, int rowTop, int rowLeft, int rowWidth, int itemHeight, int mouseX,
-                                  int mouseY, boolean mouseOver, float partialTick) {
+    protected void renderControls(GuiGraphics guiGraphics, int rowTop, int rowLeft, int rowWidth, int itemHeight, int mouseX, int mouseY, boolean mouseOver, float partialTick) {
         guiGraphics.drawString(Minecraft.getInstance().font, this.name, 60 - TITLE_WIDTH, 6, 0xFFFFFF);
         this.btnReset.render(guiGraphics, mouseX, mouseY, partialTick);
         this.btnUndo.render(guiGraphics, mouseX, mouseY, partialTick);
@@ -115,7 +125,7 @@ public abstract class OptionValueEntry<V> extends ConfigOptionList.OptionEntry {
             guiGraphics.renderComponentTooltip(Minecraft.getInstance().font, tooltipConverted, mouseX, mouseY);
         }
         Lighting.setupForFlatItems();
-        GlStateManager._disableBlend(); // TODO: Replace this
+        GlStateManager._disableBlend();
     }
 
     protected abstract void overrideUnsaved(V value);

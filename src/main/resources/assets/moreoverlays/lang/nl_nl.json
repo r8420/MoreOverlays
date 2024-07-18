@@ -1,16 +1,43 @@
 {
   "key.moreoverlays.category": "More Overlays Updated",
-  "key.moreoverlays.chunkbounds.desc": "Tonen/Verbergen Chunk Grenzen",
-  "key.moreoverlays.lightoverlay.desc": "Tonen/Verbergen Donkere Plekken",
+  "key.moreoverlays.chunkbounds.desc": "Wissel Chunk Grenzen",
+  "key.moreoverlays.lightoverlay.desc": "Wissel Licht Overlay",
 
-  "gui.config.moreoverlays.tile": "More Overlays Updated Instellingen",
-  "gui.config.moreoverlays.reset_config": "Instellingen resetten",
-  "gui.config.moreoverlays.undo": "Wijzigingen resetten",
+  "gui.config.moreoverlays.title": "Instellingen van More Overlays Updated",
+  "gui.config.moreoverlays.reset_config": "Herstel",
+  "gui.config.moreoverlays.undo": "Ongedaan Maken",
   "gui.config.moreoverlays.save": "Opslaan",
 
-  "config.moreoverlays.category.lightoverlay": "Licht-Overlay",
+  "config.moreoverlays.category.lightoverlay": "Licht Overlay",
   "config.moreoverlays.category.chunkbounds": "Chunk Grenzen",
   "config.moreoverlays.category.itemsearch": "Item Zoeken",
-  "config.moreoverlays.category.searchoverlay": "Item Zoeken",
-  "config.moreoverlays.category.rendersettings": "Render Instellingen"
+  "config.moreoverlays.category.rendersettings": "Render Instellingen",
+  "config.moreoverlays.category.searchoverlay": "Zoek Overlay",
+
+  "config.moreoverlays.lightoverlay.uprange": "Bereik Omhoog",
+  "config.moreoverlays.lightoverlay.downrange": "Bereik Omlaag",
+  "config.moreoverlays.lightoverlay.hrange": "Horizontaal Bereik",
+  "config.moreoverlays.lightoverlay.ignorelayer": "Negeer Laag",
+  "config.moreoverlays.lightoverlay.ignorespawnlist": "Negeer Spawnlijst",
+  "config.moreoverlays.lightoverlay.simplecheck": "Eenvoudige Check",
+  "config.moreoverlays.lightoverlay.savelevel": "Veilige Lichtniveau",
+  "config.moreoverlays.lightoverlay.finishedmigration": "1.18 Migratie Voltooid",
+
+  "config.moreoverlays.chunkbounds.radius": "Randradius",
+  "config.moreoverlays.chunkbounds.middle": "Toon Middelpunt",
+
+  "config.moreoverlays.rendersettings.chunk_edge_color": "Chunk: Randkleur",
+  "config.moreoverlays.rendersettings.chunk_grid_color": "Chunk: Rasterkleur",
+  "config.moreoverlays.rendersettings.chunk_mid_color": "Chunk: Middenkleur",
+  "config.moreoverlays.rendersettings.chunk_line_width": "Chunk: Lijndikte",
+  "config.moreoverlays.rendersettings.spawn_always_color": "Spawn: Kleur",
+  "config.moreoverlays.rendersettings.spawn_night_color": "Spawn: Nacht Kleur",
+  "config.moreoverlays.rendersettings.spawn_line_width": "Spawn: Lijndikte",
+
+  "config.moreoverlays.searchoverlay.search_enabled": "Zoeken Inschakelen",
+  "config.moreoverlays.searchoverlay.custom_search": "Aangepast Zoeken",
+  "config.moreoverlays.searchoverlay.search_tooltip": "Tooltip Zoeken",
+  "config.moreoverlays.searchoverlay.search_box_color": "Zoekvak Kleur",
+  "config.moreoverlays.searchoverlay.search_slot_color": "Slot Kleur",
+  "config.moreoverlays.searchoverlay.search_slot_alpha": "Slot Transparantie"
 }

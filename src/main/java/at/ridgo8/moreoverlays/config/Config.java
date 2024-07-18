@@ -28,6 +28,8 @@ public class Config {
 
     public static ModConfigSpec.BooleanValue search_enabled;
     public static ModConfigSpec.BooleanValue search_searchCustom;
+    public static ModConfigSpec.BooleanValue search_searchTooltip;
+    public static ModConfigSpec.IntValue search_maxResults;
     public static ModConfigSpec.IntValue search_searchBoxColor;
     public static ModConfigSpec.IntValue search_filteredSlotColor;
     public static ModConfigSpec.DoubleValue search_filteredSlotTransparancy;
@@ -64,7 +66,9 @@ public class Config {
 
         builder.comment("Settings for the search overlay").push("searchoverlay");
         search_enabled = builder.comment("Setting this to false this will disable the functionality to double click the JEI search bar for item searching.").define("search_enabled", true);
-        search_searchCustom = builder.comment("Also searches for the custom name of an item in user inventory (for example items named in anvil)\nSetting this to false will increase performance but will not find custom named items.").define("custom_search", true);
+        search_searchCustom = builder.comment("Also searches for the custom name of an item in user inventory (for example items named in anvil)\nSetting this to false will increase performance.").define("custom_search", true);
+        search_searchTooltip = builder.comment("Also searches the tooltip of items in the users inventory\nSetting this to false will increase performance.").define("search_tooltip", true);
+        search_maxResults = builder.comment("Maximum amount of search results for the item searching to be active").defineInRange("search_max_results", 16384, 256, Integer.MAX_VALUE);
         search_searchBoxColor = builder.comment("Color for the search box when double clicked").defineInRange("search_box_color", 0xFFFF00, 0, 0xFFFFFF);
         search_filteredSlotColor = builder.comment("Color of the filtered out slots").defineInRange("search_slot_color", 0x000000, 0, 0xFFFFFF);
         search_filteredSlotTransparancy = builder.comment("Transparancy for the filtered out slots").defineInRange("search_slot_alpha", 0.5F, 0F, 1F);
