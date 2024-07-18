@@ -17,12 +17,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.core.BlockPos;
 import org.apache.commons.lang3.tuple.Pair;
+import org.joml.Matrix4f;
 import org.joml.Vector4d;
+import org.joml.Vector4f;
 
 
 public class LightOverlayRenderer implements ILightRenderer {
 
-    private final static ResourceLocation BLANK_TEX = new ResourceLocation(MoreOverlays.MOD_ID, "textures/blank.png");
+    private final static ResourceLocation BLANK_TEX = ResourceLocation.fromNamespaceAndPath(MoreOverlays.MOD_ID, "textures/blank.png");
 
     private static Tesselator tess;
     private static BufferBuilder renderer;
@@ -30,11 +32,11 @@ public class LightOverlayRenderer implements ILightRenderer {
 
     public LightOverlayRenderer() {
         tess = Tesselator.getInstance();
-        renderer = tess.getBuilder();
+        renderer = tess.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
         minecraft = Minecraft.getInstance();
     }
 
-    private static void renderCross(PoseStack matrixstack, BlockPos pos, float r, float g, float b) {
+    private static void renderCross(Matrix4f matrix4f, BlockPos pos, float r, float g, float b) {
 
         Player player = minecraft.player;
         if(player == null)
@@ -65,33 +67,30 @@ public class LightOverlayRenderer implements ILightRenderer {
         int z0 = pos.getZ();
         int z1 = z0 + 1;
 
-        Matrix4d matrix4d = new Matrix4d();
-        matrixstack.last().pose().get(matrix4d);
-
 
         Camera camera = minecraft.gameRenderer.getMainCamera();
-        double cameraX = camera.getPosition().x;
-        double cameraY = camera.getPosition().y;
-        double cameraZ = camera.getPosition().z;
+        float cameraX = (float) camera.getPosition().x;
+        float cameraY = (float) camera.getPosition().y;
+        float cameraZ = (float) camera.getPosition().z;
 
-        drawVertex(matrix4d, x0-cameraX, y-cameraY, z0-cameraZ, r, g, b);
-        drawVertex(matrix4d, x1-cameraX, y-cameraY, z1-cameraZ, r, g, b);
-        drawVertex(matrix4d, x1-cameraX, y-cameraY, z0-cameraZ, r, g, b);
-        drawVertex(matrix4d, x0-cameraX, y-cameraY, z1-cameraZ, r, g, b);
+        drawVertex(matrix4f, x0-cameraX, y-cameraY, z0-cameraZ, r, g, b);
+        drawVertex(matrix4f, x1-cameraX, y-cameraY, z1-cameraZ, r, g, b);
+        drawVertex(matrix4f, x1-cameraX, y-cameraY, z0-cameraZ, r, g, b);
+        drawVertex(matrix4f, x0-cameraX, y-cameraY, z1-cameraZ, r, g, b);
     }
 
 
-    private static void drawVertex(Matrix4d matrix, double x, double y, double z, float r, float g, float b) {
-        Vector4d vector4d = matrix.transform(new Vector4d(x, y, z, 1.0D));
-        renderer.vertex(vector4d.x(), vector4d.y(), vector4d.z()).color(r, g, b, 1).endVertex();
+    private static void drawVertex(Matrix4f matrix4f, float x, float y, float z, float r, float g, float b) {
+        Vector4f vector4f = matrix4f.transform(new Vector4f(x, y, z, 1.0f));
+        renderer.addVertex(vector4f.x(), vector4f.y(), vector4f.z()).setColor(r, g, b, 1);
      }
 
-    public void renderOverlays(ILightScanner scanner, PoseStack matrixstack) {
+    public void renderOverlays(ILightScanner scanner, Matrix4f matrix4f) {
         Minecraft.getInstance().getTextureManager().bindForSetup(BLANK_TEX);
 
         RenderSystem.enableDepthTest();
         RenderSystem.disableBlend();
-        RenderSystem.lineWidth((float) (double) Config.render_chunkLineWidth.get());
+        RenderSystem.lineWidth(Config.render_chunkLineWidth.get().floatValue());
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
         if (Minecraft.getInstance().options.graphicsMode().get() != GraphicsStatus.FABULOUS) {
@@ -107,17 +106,22 @@ public class LightOverlayRenderer implements ILightRenderer {
         float ng = ((float) ((Config.render_spawnNColor.get() >> 8) & 0xFF)) / 255F;
         float nb = ((float) (Config.render_spawnNColor.get() & 0xFF)) / 255F;
 
-        renderer.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+        renderer = tess.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
         for (Pair<BlockPos, Byte> entry : scanner.getLightModes()) {
             Byte mode = entry.getValue();
             if (mode == null || mode == 0)
                 continue;
             else if (mode == 1)
-                renderCross(matrixstack, entry.getKey(), nr, ng, nb);
+                renderCross(matrix4f, entry.getKey(), nr, ng, nb);
             else if (mode == 2)
-                renderCross(matrixstack, entry.getKey(), ar, ag, ab);
+                renderCross(matrix4f, entry.getKey(), ar, ag, ab);
         }
-        tess.end();
+
+        MeshData meshData = renderer.build();
+        if (meshData != null) {
+            BufferUploader.drawWithShader(meshData);
+        }
+
         // restore render settings
         RenderSystem.depthMask(true);
         if (Minecraft.getInstance().options.graphicsMode().get() != GraphicsStatus.FABULOUS) {

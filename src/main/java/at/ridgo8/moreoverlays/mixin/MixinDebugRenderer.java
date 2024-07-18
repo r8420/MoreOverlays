@@ -20,10 +20,10 @@ public class MixinDebugRenderer {
     @Inject(method = "render", at = @At("HEAD"))
     private void render(PoseStack p_113458_, MultiBufferSource.BufferSource p_113459_, double p_113460_, double p_113461_, double p_113462_, CallbackInfo ci) {
         if (ChunkBoundsHandler.getMode() != ChunkBoundsHandler.RenderMode.NONE && Minecraft.getInstance().options.graphicsMode().get() == GraphicsStatus.FABULOUS) {
-            ChunkBoundsRenderer.renderOverlays(p_113458_);
+            ChunkBoundsRenderer.renderOverlays(p_113458_.last().pose());
         }
         if(LightOverlayHandler.isEnabled() && Minecraft.getInstance().options.graphicsMode().get() == GraphicsStatus.FABULOUS){
-            LightOverlayHandler.renderer.renderOverlays(LightOverlayHandler.scanner, p_113458_);
+            LightOverlayHandler.renderer.renderOverlays(LightOverlayHandler.scanner, p_113458_.last().pose());
         }
     }
 }

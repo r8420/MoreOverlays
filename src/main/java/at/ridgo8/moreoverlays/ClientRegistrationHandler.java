@@ -7,6 +7,7 @@ import at.ridgo8.moreoverlays.itemsearch.GuiHandler;
 import at.ridgo8.moreoverlays.itemsearch.GuiUtils;
 import at.ridgo8.moreoverlays.lightoverlay.LightOverlayHandler;
 import at.ridgo8.moreoverlays.lightoverlay.integration.AlternateLightHandler;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -15,8 +16,6 @@ import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import org.lwjgl.glfw.GLFW;
-
-import static at.ridgo8.moreoverlays.KeyBindings.mappedKey;
 
 public final class ClientRegistrationHandler {
 
@@ -30,8 +29,8 @@ public final class ClientRegistrationHandler {
         return enable_jei;
     }
 
-    public static KeyMapping lightOverlayKeyMapping = new KeyMapping("key." + MoreOverlays.MOD_ID + ".lightoverlay.desc", KeyConflictContext.IN_GAME, mappedKey(GLFW.GLFW_KEY_F7), "key." + MoreOverlays.MOD_ID + ".category");
-    public static KeyMapping chunkBoundsKeyMapping = new KeyMapping("key." + MoreOverlays.MOD_ID + ".chunkbounds.desc", KeyConflictContext.IN_GAME, mappedKey(GLFW.GLFW_KEY_F9), "key." + MoreOverlays.MOD_ID + ".category");
+    public static KeyMapping lightOverlayKeyMapping = new KeyMapping("key." + MoreOverlays.MOD_ID + ".lightoverlay.desc", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F7, "key." + MoreOverlays.MOD_ID + ".category");
+    public static KeyMapping chunkBoundsKeyMapping = new KeyMapping("key." + MoreOverlays.MOD_ID + ".chunkbounds.desc", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F9, "key." + MoreOverlays.MOD_ID + ".category");
 
     public static void setupClient() {
         final ModLoadingContext ctx = ModLoadingContext.get();

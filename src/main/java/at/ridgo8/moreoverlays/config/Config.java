@@ -31,7 +31,7 @@ public class Config {
     public static ForgeConfigSpec.IntValue search_maxResults;
     public static ForgeConfigSpec.IntValue search_searchBoxColor;
     public static ForgeConfigSpec.IntValue search_filteredSlotColor;
-    public static ForgeConfigSpec.DoubleValue search_filteredSlotTransparancy;
+    public static ForgeConfigSpec.FloatValue search_filteredSlotTransparancy;
 
 
     public static void initialize() {

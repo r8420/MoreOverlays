@@ -97,7 +97,7 @@ public class LightOverlayHandler {
     }
 
     @SubscribeEvent
-    public void onClientTick(TickEvent.ClientTickEvent event) {
+    public static void onClientTick(final TickEvent.ClientTickEvent event) {
         if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && enabled && event.phase == TickEvent.Phase.END &&
                 (Minecraft.getInstance().screen == null || !Minecraft.getInstance().screen.isPauseScreen())) {
             scanner.update(Minecraft.getInstance().player);

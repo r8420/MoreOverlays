@@ -1,8 +1,8 @@
 package at.ridgo8.moreoverlays.api.lightoverlay;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import org.joml.Matrix4f;
 
 public interface ILightRenderer {
 
-    void renderOverlays(ILightScanner scanner, PoseStack matrixStack);
+    void renderOverlays(ILightScanner scanner, Matrix4f matrix4f);
 }

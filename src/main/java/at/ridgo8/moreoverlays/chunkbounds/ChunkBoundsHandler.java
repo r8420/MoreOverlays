@@ -25,10 +25,10 @@ public class ChunkBoundsHandler {
 
     private static RenderMode mode = RenderMode.NONE;
 
-    private final List<String> regionInfo = new ArrayList<>();
+    private static final List<String> regionInfo = new ArrayList<>();
 
-    private int playerPrevRegionPosX = Integer.MIN_VALUE;
-    private int playerPrevRegionPosZ = Integer.MIN_VALUE;
+    private static int playerPrevRegionPosX = Integer.MIN_VALUE;
+    private static int playerPrevRegionPosZ = Integer.MIN_VALUE;
 
     public ChunkBoundsHandler() {
     }
@@ -90,7 +90,7 @@ public class ChunkBoundsHandler {
     }
 
     @SubscribeEvent
-    public void onClientTick(TickEvent.ClientTickEvent event) {
+    public static void onClientTick(final TickEvent.ClientTickEvent event) {
         Minecraft instance = Minecraft.getInstance();
         if (event.phase != TickEvent.Phase.END || instance.player == null) {
             return;

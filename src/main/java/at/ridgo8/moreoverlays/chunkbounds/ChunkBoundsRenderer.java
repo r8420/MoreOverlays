@@ -11,12 +11,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import org.joml.Matrix4f;
 import org.joml.Vector4d;
+import org.joml.Vector4f;
 
 public class ChunkBoundsRenderer {
-    private final static ResourceLocation BLANK_TEX = new ResourceLocation(MoreOverlays.MOD_ID, "textures/blank.png");
+    private final static ResourceLocation BLANK_TEX = ResourceLocation.fromNamespaceAndPath(MoreOverlays.MOD_ID, "textures/blank.png");
 
-    public static void renderOverlays(PoseStack matrixstack) {
+    public static void renderOverlays(Matrix4f matrix4f) {
         Player player = Minecraft.getInstance().player;
         Minecraft.getInstance().getTextureManager().bindForSetup(BLANK_TEX);
 
@@ -80,21 +82,21 @@ public class ChunkBoundsRenderer {
 
         for (int xo = -16 - radius; xo <= radius; xo += 16) {
             for (int yo = -16 - radius; yo <= radius; yo += 16) {
-                renderEdge(matrixstack, x0 - xo, z0 - yo, h3, h, renderColorEdge);
+                renderEdge(matrix4f, x0 - xo, z0 - yo, h3, h, renderColorEdge);
             }
         }
 
         if (Config.chunk_ShowMiddle.get()) {
-            renderEdge(matrixstack, x2, z2, h3, h, renderColorMiddle);
+            renderEdge(matrix4f, x2, z2, h3, h, renderColorMiddle);
         }
 
         if (ChunkBoundsHandler.getMode() == ChunkBoundsHandler.RenderMode.GRID) {
-            renderGrid(matrixstack, x0, h1, z0 - 0.005f, x0, h2, z1 + 0.005f, 1.0f, renderColorGrid);
-            renderGrid(matrixstack, x1, h1, z0 - 0.005f, x1, h2, z1 + 0.005f, 1.0f, renderColorGrid);
-            renderGrid(matrixstack, x0 - 0.005f, h1, z0, x1 + 0.005f, h2, z0, 1.0f, renderColorGrid);
-            renderGrid(matrixstack, x0 - 0.005f, h1, z1, x1 + 0.005f, h2, z1, 1.0f, renderColorGrid);
+            renderGrid(matrix4f, x0, h1, z0 - 0.005f, x0, h2, z1 + 0.005f, 1.0f, renderColorGrid);
+            renderGrid(matrix4f, x1, h1, z0 - 0.005f, x1, h2, z1 + 0.005f, 1.0f, renderColorGrid);
+            renderGrid(matrix4f, x0 - 0.005f, h1, z0, x1 + 0.005f, h2, z0, 1.0f, renderColorGrid);
+            renderGrid(matrix4f, x0 - 0.005f, h1, z1, x1 + 0.005f, h2, z1, 1.0f, renderColorGrid);
         } else if (ChunkBoundsHandler.getMode() == ChunkBoundsHandler.RenderMode.REGIONS) {
-            renderGrid(matrixstack, regionBorderX0 - 0.005f, regionBorderY0 - 0.005f, regionBorderZ0 - 0.005f, regionBorderX1 + 0.005f,
+            renderGrid(matrix4f, regionBorderX0 - 0.005f, regionBorderY0 - 0.005f, regionBorderZ0 - 0.005f, regionBorderX1 + 0.005f,
                     regionBorderY1 + 0.005f, regionBorderZ1 + 0.005f, 16.0f, renderColorGrid);
         }
 
@@ -108,17 +110,14 @@ public class ChunkBoundsRenderer {
         }
     }
 
-    public static void renderEdge(PoseStack matrixstack, double x, double z, double h3, double h, int color) {
-        Matrix4d matrix4d = new Matrix4d();
-        matrixstack.last().pose().get(matrix4d);
+    public static void renderEdge(Matrix4f matrix4f, float x, float z, float h3, float h, int color) {
         Tesselator tess = Tesselator.getInstance();
-        BufferBuilder bufferBuilder = tess.getBuilder();
         Minecraft minecraft = Minecraft.getInstance();
 
         Camera camera = minecraft.gameRenderer.getMainCamera();
-        double cameraX = camera.getPosition().x;
-        double cameraY = camera.getPosition().y;
-        double cameraZ = camera.getPosition().z;
+        float cameraX = (float) camera.getPosition().x;
+        float cameraY = (float) camera.getPosition().y;
+        float cameraZ = (float) camera.getPosition().z;
 
         x -= cameraX;
         h3 -= cameraY;
@@ -127,74 +126,78 @@ public class ChunkBoundsRenderer {
 
         z -= cameraZ;
 
-        bufferBuilder.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+        BufferBuilder bufferBuilder = tess.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
 
         float r = ((float) ((color >> 16) & 0xFF)) / 255F;
         float g = ((float) ((color >> 8) & 0xFF)) / 255F;
         float b = ((float) (color & 0xFF)) / 255F;
 
-        drawVertex(bufferBuilder, matrix4d, x, h3, z, r, g, b);
-        drawVertex(bufferBuilder, matrix4d, x, h, z, r, g, b);
+        drawVertex(bufferBuilder, matrix4f, x, h3, z, r, g, b);
+        drawVertex(bufferBuilder, matrix4f, x, h, z, r, g, b);
 
-        tess.end();
+        MeshData meshData = bufferBuilder.build();
+        if (meshData != null) {
+            BufferUploader.drawWithShader(meshData);
+        }
     }
 
-    public static void renderGrid(PoseStack matrixstack, float x0, float y0, float z0, float x1, float y1, float z1, float step, int color) {
-        Matrix4d matrix4d = new Matrix4d();
-        matrixstack.last().pose().get(matrix4d);
+    public static void renderGrid(Matrix4f matrix4f, float x0, float y0, float z0, float x1, float y1, float z1, float step, int color) {
         Tesselator tess = Tesselator.getInstance();
-        BufferBuilder renderer = tess.getBuilder();
         Minecraft minecraft = Minecraft.getInstance();
 
         Camera camera = minecraft.gameRenderer.getMainCamera();
-        double cameraX = camera.getPosition().x;
-        double cameraY = camera.getPosition().y;
-        double cameraZ = camera.getPosition().z;
+        float cameraX = (float) camera.getPosition().x;
+        float cameraY = (float) camera.getPosition().y;
+        float cameraZ = (float) camera.getPosition().z;
 
         
-        renderer.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+        BufferBuilder renderer = tess.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
         float r = ((float) ((color >> 16) & 0xFF)) / 255F;
         float g = ((float) ((color >> 8) & 0xFF)) / 255F;
         float b = ((float) (color & 0xFF)) / 255F;
 
         for (float x = x0; x <= x1; x += step) {
-            drawVertex(renderer, matrix4d, x - cameraX, y0 - cameraY, z0 - cameraZ, r, g, b);
-            drawVertex(renderer, matrix4d, x - cameraX, y1 - cameraY, z0 - cameraZ, r, g, b);
-            drawVertex(renderer, matrix4d, x - cameraX, y0 - cameraY, z1 - cameraZ, r, g, b);
-            drawVertex(renderer, matrix4d, x - cameraX, y1 - cameraY, z1 - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x - cameraX, y0 - cameraY, z0 - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x - cameraX, y1 - cameraY, z0 - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x - cameraX, y0 - cameraY, z1 - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x - cameraX, y1 - cameraY, z1 - cameraZ, r, g, b);
 
-            drawVertex(renderer, matrix4d, x - cameraX, y0 - cameraY, z0 - cameraZ, r, g, b);
-            drawVertex(renderer, matrix4d, x - cameraX, y0 - cameraY, z1 - cameraZ, r, g, b);
-            drawVertex(renderer, matrix4d, x - cameraX, y1 - cameraY, z0 - cameraZ, r, g, b);
-            drawVertex(renderer, matrix4d, x - cameraX, y1 - cameraY, z1 - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x - cameraX, y0 - cameraY, z0 - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x - cameraX, y0 - cameraY, z1 - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x - cameraX, y1 - cameraY, z0 - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x - cameraX, y1 - cameraY, z1 - cameraZ, r, g, b);
         }
         for (float y = y0; y <= y1; y += step) {
-            drawVertex(renderer, matrix4d, x0 - cameraX, y - cameraY, z0 - cameraZ, r, g, b);
-            drawVertex(renderer, matrix4d, x1 - cameraX, y - cameraY, z0 - cameraZ, r, g, b);
-            drawVertex(renderer, matrix4d, x0 - cameraX, y - cameraY, z1 - cameraZ, r, g, b);
-            drawVertex(renderer, matrix4d, x1 - cameraX, y - cameraY, z1 - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x0 - cameraX, y - cameraY, z0 - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x1 - cameraX, y - cameraY, z0 - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x0 - cameraX, y - cameraY, z1 - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x1 - cameraX, y - cameraY, z1 - cameraZ, r, g, b);
 
-            drawVertex(renderer, matrix4d, x0 - cameraX, y - cameraY, z0 - cameraZ, r, g, b);
-            drawVertex(renderer, matrix4d, x0 - cameraX, y - cameraY, z1 - cameraZ, r, g, b);
-            drawVertex(renderer, matrix4d, x1 - cameraX, y - cameraY, z0 - cameraZ, r, g, b);
-            drawVertex(renderer, matrix4d, x1 - cameraX, y - cameraY, z1 - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x0 - cameraX, y - cameraY, z0 - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x0 - cameraX, y - cameraY, z1 - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x1 - cameraX, y - cameraY, z0 - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x1 - cameraX, y - cameraY, z1 - cameraZ, r, g, b);
         }
         for (float z = z0; z <= z1; z += step) {
-            drawVertex(renderer, matrix4d, x0 - cameraX, y0 - cameraY, z - cameraZ, r, g, b);
-            drawVertex(renderer, matrix4d, x1 - cameraX, y0 - cameraY, z - cameraZ, r, g, b);
-            drawVertex(renderer, matrix4d, x0 - cameraX, y1 - cameraY, z - cameraZ, r, g, b);
-            drawVertex(renderer, matrix4d, x1 - cameraX, y1 - cameraY, z - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x0 - cameraX, y0 - cameraY, z - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x1 - cameraX, y0 - cameraY, z - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x0 - cameraX, y1 - cameraY, z - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x1 - cameraX, y1 - cameraY, z - cameraZ, r, g, b);
 
-            drawVertex(renderer, matrix4d, x0 - cameraX, y0 - cameraY, z - cameraZ, r, g, b);
-            drawVertex(renderer, matrix4d, x0 - cameraX, y1 - cameraY, z - cameraZ, r, g, b);
-            drawVertex(renderer, matrix4d, x1 - cameraX, y0 - cameraY, z - cameraZ, r, g, b);
-            drawVertex(renderer, matrix4d, x1 - cameraX, y1 - cameraY, z - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x0 - cameraX, y0 - cameraY, z - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x0 - cameraX, y1 - cameraY, z - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x1 - cameraX, y0 - cameraY, z - cameraZ, r, g, b);
+            drawVertex(renderer, matrix4f, x1 - cameraX, y1 - cameraY, z - cameraZ, r, g, b);
         }
-        tess.end();
+
+        MeshData meshData = renderer.build();
+        if (meshData != null) {
+            BufferUploader.drawWithShader(meshData);
+        }
     }
 
-    private static void drawVertex(BufferBuilder renderer, Matrix4d matrix, double x, double y, double z, float r, float g, float b) {
-        Vector4d vector4d = matrix.transform(new Vector4d(x, y, z, 1.0D));
-        renderer.vertex(vector4d.x(), vector4d.y(), vector4d.z()).color(r, g, b, 1).endVertex();
+    private static void drawVertex(BufferBuilder renderer, Matrix4f matrix, float x, float y, float z, float r, float g, float b) {
+        Vector4f vector4f = matrix.transform(new Vector4f(x, y, z, 1.0f));
+        renderer.addVertex(vector4f.x(), vector4f.y(), vector4f.z()).setColor(r, g, b, 1);
     }
 }

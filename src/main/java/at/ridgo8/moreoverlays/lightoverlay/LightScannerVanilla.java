@@ -3,6 +3,7 @@ package at.ridgo8.moreoverlays.lightoverlay;
 import at.ridgo8.moreoverlays.api.lightoverlay.LightScannerBase;
 import at.ridgo8.moreoverlays.config.Config;
 import com.google.common.collect.Lists;
+import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.MobCategory;
@@ -79,12 +80,10 @@ public class LightScannerVanilla extends LightScannerBase {
         if (!checkCollision(pos, world))
             return 0;
 
-        final BlockState state = world.getBlockState(blockPos);
-        final Block block = state.getBlock();
         if (!Config.light_SimpleEntityCheck.get()) {
             boolean hasSpawnable = false;
             for (final EntityType<?> type : this.typesToCheck) {
-                if (block.isValidSpawn(state, world, blockPos, SpawnPlacements.Type.ON_GROUND, type)) {
+                if(SpawnPlacementTypes.ON_GROUND.isSpawnPositionOk(world, pos, type)){
                     hasSpawnable = true;
                     break;
                 }
@@ -93,7 +92,7 @@ public class LightScannerVanilla extends LightScannerBase {
             if (!hasSpawnable) {
                 return 0;
             }
-        } else if (!block.isValidSpawn(state, world, blockPos, SpawnPlacements.Type.ON_GROUND, EntityType.ZOMBIE)) {
+        } else if (!SpawnPlacementTypes.ON_GROUND.isSpawnPositionOk(world, pos, EntityType.ZOMBIE)) {
             return 0;
         }
 

@@ -15,10 +15,6 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = MoreOverlays.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class KeyBindings {
 
-    static InputConstants.Key mappedKey(int key) {
-        return InputConstants.Type.KEYSYM.getOrCreate(key);
-    }
-
     public static void init() {
         MinecraftForge.EVENT_BUS.register(new KeyBindings());
     }
