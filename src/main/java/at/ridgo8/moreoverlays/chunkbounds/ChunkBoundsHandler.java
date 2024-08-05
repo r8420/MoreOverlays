@@ -90,7 +90,7 @@ public class ChunkBoundsHandler {
     }
 
     @SubscribeEvent
-    public static void onClientTick(final TickEvent.ClientTickEvent event) {
+    public void onClientTick(TickEvent.ClientTickEvent event) {
         Minecraft instance = Minecraft.getInstance();
         if (event.phase != TickEvent.Phase.END || instance.player == null) {
             return;

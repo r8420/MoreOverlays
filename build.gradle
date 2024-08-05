@@ -1,10 +1,10 @@
-// Remove the rename task on github builds because it freezes (has nothing to do with org.gradle.dependency.verification)
-tasks.whenTaskAdded {task ->
-    if(task.name.contains("rename") && System.getProperty("org.gradle.dependency.verification") == "off") {
-        println "Will skip rename task"
-        task.enabled = false
-    }
-}
+//// Remove the rename task on github builds because it freezes (has nothing to do with org.gradle.dependency.verification)
+//tasks.whenTaskAdded {task ->
+//    if(task.name.contains("rename") && System.getProperty("org.gradle.dependency.verification") == "off") {
+//        println "Will skip rename task"
+//        task.enabled = false
+//    }
+//}
 
 buildscript {
     repositories {
@@ -13,7 +13,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '[6.0,6.2]', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '[6.0.24,6.2)', changing: true
         // MixinGradle:
         classpath 'org.spongepowered:mixingradle:0.7.+'
     }
@@ -46,6 +46,10 @@ minecraft {
     // Use non-default mappings at your own risk. They may not always work.
     // Simply re-run your setup task after changing the mappings to update your workspace.
     mappings channel: 'official', version: '1.21'
+
+    reobf = false
+
+    copyIdeResources = true
 
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
 
@@ -220,4 +224,15 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+sourceSets.each {
+    def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
+    it.output.resourcesDir = dir
+    it.java.destinationDirectory = dir
 }

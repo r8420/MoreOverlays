@@ -1,47 +1,33 @@
 package at.ridgo8.moreoverlays;
 
-import at.ridgo8.moreoverlays.chunkbounds.ChunkBoundsHandler;
-import at.ridgo8.moreoverlays.lightoverlay.LightOverlayHandler;
 import com.mojang.blaze3d.platform.InputConstants;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraft.client.KeyMapping;
+import org.lwjgl.glfw.GLFW;
 
 @Mod.EventBusSubscriber(modid = MoreOverlays.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class KeyBindings {
 
-    public static void init() {
-        MinecraftForge.EVENT_BUS.register(new KeyBindings());
-    }
+    // Lazy initialization for key mappings
+    public static final Lazy<KeyMapping> lightOverlayKeyMapping = Lazy.of(() ->
+            new KeyMapping("key." + MoreOverlays.MOD_ID + ".lightoverlay.desc",
+                    InputConstants.Type.KEYSYM,
+                    GLFW.GLFW_KEY_F7,
+                    "key." + MoreOverlays.MOD_ID + ".category"));
 
-    public static RegisterKeyMappingsEvent currentEvent;
+    public static final Lazy<KeyMapping> chunkBoundsKeyMapping = Lazy.of(() ->
+            new KeyMapping("key." + MoreOverlays.MOD_ID + ".chunkbounds.desc",
+                    InputConstants.Type.KEYSYM,
+                    GLFW.GLFW_KEY_F9,
+                    "key." + MoreOverlays.MOD_ID + ".category"));
 
-    @OnlyIn(Dist.CLIENT)
+    // Remove any manual event bus registration from this class
     @SubscribeEvent
-    public static void onKeyMapping(RegisterKeyMappingsEvent event) {
-        currentEvent = event;
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> KeyBindings::registerKeyMappings);
-    }
-
-    private static void registerKeyMappings() {
-        currentEvent.register(ClientRegistrationHandler.lightOverlayKeyMapping);
-        currentEvent.register(ClientRegistrationHandler.chunkBoundsKeyMapping);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent(receiveCanceled = true)
-    public void onKeyEvent(InputEvent.Key event) {
-        if (ClientRegistrationHandler.lightOverlayKeyMapping.consumeClick()) {
-            LightOverlayHandler.setEnabled(!LightOverlayHandler.isEnabled());
-        }
-
-        if (ClientRegistrationHandler.chunkBoundsKeyMapping.consumeClick()) {
-            ChunkBoundsHandler.toggleMode();
-        }
+    public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
+        event.register(lightOverlayKeyMapping.get());
+        event.register(chunkBoundsKeyMapping.get());
     }
 }
