@@ -2,7 +2,7 @@ package at.ridgo8.moreoverlays.lightoverlay;
 
 import at.ridgo8.moreoverlays.api.lightoverlay.ILightRenderer;
 import at.ridgo8.moreoverlays.api.lightoverlay.ILightScanner;
-import at.ridgo8.moreoverlays.config.Config;
+import static at.ridgo8.moreoverlays.MoreOverlays.Config;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import org.joml.Matrix4d;
@@ -85,7 +85,7 @@ public class LightOverlayRenderer implements ILightRenderer {
     public void renderOverlays(ILightScanner scanner, PoseStack matrixstack) {
         RenderSystem.enableDepthTest();
         RenderSystem.disableBlend();
-        RenderSystem.lineWidth((float) (double) Config.render_chunkLineWidth);
+        RenderSystem.lineWidth((float) (double) Config.render_chunkLineWidth());
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
         if (Minecraft.getInstance().options.graphicsMode().get() != GraphicsStatus.FABULOUS) {
@@ -93,13 +93,13 @@ public class LightOverlayRenderer implements ILightRenderer {
             RenderSystem.enableCull();
         }
 
-        float ar = ((float) ((Config.render_spawnAColor >> 16) & 0xFF)) / 255F;
-        float ag = ((float) ((Config.render_spawnAColor >> 8) & 0xFF)) / 255F;
-        float ab = ((float) (Config.render_spawnAColor & 0xFF)) / 255F;
+        float ar = ((float) ((Config.render_spawnAColor().rgb() >> 16) & 0xFF)) / 255F;
+        float ag = ((float) ((Config.render_spawnAColor().rgb() >> 8) & 0xFF)) / 255F;
+        float ab = ((float) (Config.render_spawnAColor().rgb() & 0xFF)) / 255F;
 
-        float nr = ((float) ((Config.render_spawnNColor >> 16) & 0xFF)) / 255F;
-        float ng = ((float) ((Config.render_spawnNColor >> 8) & 0xFF)) / 255F;
-        float nb = ((float) (Config.render_spawnNColor & 0xFF)) / 255F;
+        float nr = ((float) ((Config.render_spawnNColor().rgb() >> 16) & 0xFF)) / 255F;
+        float ng = ((float) ((Config.render_spawnNColor().rgb() >> 8) & 0xFF)) / 255F;
+        float nb = ((float) (Config.render_spawnNColor().rgb() & 0xFF)) / 255F;
 
         renderer.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
         for (Pair<BlockPos, Byte> entry : scanner.getLightModes()) {

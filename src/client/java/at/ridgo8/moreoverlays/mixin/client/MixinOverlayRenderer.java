@@ -22,44 +22,30 @@ public class MixinOverlayRenderer {
     @Inject(at = @At("TAIL"), method = "render")
     private void onRender(GuiGraphics guiGraphics, float f, CallbackInfo ci) {
         Minecraft mc = Minecraft.getInstance();
-        try {
-            if (mc.getDebugOverlay().showDebugScreen()) {
+        try{
+            Field renderDebugField = null;
+            // Use reflection to check if the renderDebug field exists in mc.options. Note: remove this for future versions
+            try{
+                renderDebugField = mc.options.getClass().getDeclaredField("field_1866");
+                renderDebugField.setAccessible(true);
+            } catch(Exception o){
+                renderDebugField = mc.options.getClass().getField("renderDebug");
+            }
+
+            boolean renderDebug = renderDebugField.getBoolean(mc.options);
+
+            if (renderDebug) {
                 return;
             }
-            // Checks if the debug screen is not shown
+
             if (!ChunkBoundsHandler.regionInfo.isEmpty()) {
                 int y = 0;
                 for (String text : ChunkBoundsHandler.regionInfo) {
                     guiGraphics.drawString(mc.font, text, 10, y += 10, 0xFFFFFF);
                 }
             }
-        } catch (NoSuchMethodError e) {
-            try{
-                Field renderDebugField = null;
-                // Use reflection to check if the renderDebug field exists in mc.options. Note: remove this for future versions
-                try{
-                    renderDebugField = mc.options.getClass().getDeclaredField("field_1866");
-                    renderDebugField.setAccessible(true);
-                } catch(Exception o){
-                    renderDebugField = mc.options.getClass().getField("renderDebug");
-                }
-                
-                boolean renderDebug = renderDebugField.getBoolean(mc.options);
-
-                if (renderDebug) {
-                    return;
-                }
-
-                if (!ChunkBoundsHandler.regionInfo.isEmpty()) {
-                    int y = 0;
-                    for (String text : ChunkBoundsHandler.regionInfo) {
-                        guiGraphics.drawString(mc.font, text, 10, y += 10, 0xFFFFFF);
-                    }
-                }
-            } catch(Exception g){
-                // Ignore
-            }
-            
+        } catch(Exception g){
+            // Ignore
         }
     }
 }

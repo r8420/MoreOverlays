@@ -2,8 +2,7 @@ package at.ridgo8.moreoverlays;
 
 import at.ridgo8.moreoverlays.chunkbounds.ChunkBoundsHandler;
 import at.ridgo8.moreoverlays.chunkbounds.ChunkBoundsHandler.RenderMode;
-import at.ridgo8.moreoverlays.config.Config;
-import at.ridgo8.moreoverlays.itemsearch.GuiRenderer;
+import at.ridgo8.moreoverlays.config.MoreOverlaysConfig;
 import at.ridgo8.moreoverlays.lightoverlay.LightOverlayHandler;
 
 import org.apache.logging.log4j.LogManager;
@@ -22,6 +21,8 @@ public class MoreOverlays implements ModInitializer {
     public static final String NAME = "MoreOverlays";
 
 	public static Logger logger = LogManager.getLogger(NAME);
+
+    public static MoreOverlaysConfig Config = MoreOverlaysConfig.createAndLoad();
 
 	@Override
 	public void onInitialize() {
@@ -44,7 +45,6 @@ public class MoreOverlays implements ModInitializer {
         });
 
 
-		Config.initialize();
         ClientRegistrationHandler.setupClient();
 	}
 }

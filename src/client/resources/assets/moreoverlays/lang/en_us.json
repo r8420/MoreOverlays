@@ -1,16 +1,39 @@
 {
-  "key.moreoverlays.category": "More Overlays Updated",
-  "key.moreoverlays.chunkbounds.desc": "Toggle Chunk Boundaries",
-  "key.moreoverlays.lightoverlay.desc": "Toggle Light Overlay",
+  "text.config.moreoverlays-config-fabric.category": "More Overlays Updated",
 
-  "gui.config.moreoverlays.tile": "More Overlays Updated Settings",
-  "gui.config.moreoverlays.reset_config": "Reset Settings",
-  "gui.config.moreoverlays.undo": "Undo Changes",
-  "gui.config.moreoverlays.save": "Save",
 
-  "config.moreoverlays.category.lightoverlay": "Light Overlay",
-  "config.moreoverlays.category.chunkbounds": "Chunk Boundaries",
-  "config.moreoverlays.category.itemsearch": "Item Search",
-  "config.moreoverlays.category.searchoverlay": "Item Search Overlay",
-  "config.moreoverlays.category.rendersettings": "Render Settings"
+  "text.config.moreoverlays-config-fabric.title": "More Overlays Updated Settings",
+
+  "text.config.moreoverlays-config-fabric.section.lightoverlay": "Light Overlay",
+  "text.config.moreoverlays-config-fabric.section.chunkbounds": "Chunk Boundaries",
+  "text.config.moreoverlays-config-fabric.section.itemsearch": "Item Search",
+  "text.config.moreoverlays-config-fabric.section.rendersettings": "Render Settings",
+  "text.config.moreoverlays-config-fabric.section.searchoverlay": "Item Search Overlay",
+
+  "text.config.moreoverlays-config-fabric.option.light_UpRange": "Up Range",
+  "text.config.moreoverlays-config-fabric.option.light_DownRange": "Down Range",
+  "text.config.moreoverlays-config-fabric.option.light_HRange": "Horizontal Range",
+  "text.config.moreoverlays-config-fabric.option.light_IgnoreLayer": "Ignore Layer",
+  "text.config.moreoverlays-config-fabric.option.light_IgnoreSpawnList": "Ignore Spawnlist",
+  "text.config.moreoverlays-config-fabric.option.light_SimpleEntityCheck": "Simple Check",
+  "text.config.moreoverlays-config-fabric.option.light_SaveLevel": "Safe Light Level",
+
+  "text.config.moreoverlays-config-fabric.option.chunk_EdgeRadius": "Edge Radius",
+  "text.config.moreoverlays-config-fabric.option.chunk_ShowMiddle": "Show Mid Point",
+
+  "text.config.moreoverlays-config-fabric.option.render_chunkEdgeColor": "Chunk: Edge Color",
+  "text.config.moreoverlays-config-fabric.option.render_chunkGridColor": "Chunk: Grid Color",
+  "text.config.moreoverlays-config-fabric.option.render_chunkMiddleColor": "Chunk: Middle Color",
+  "text.config.moreoverlays-config-fabric.option.render_chunkLineWidth": "Chunk: Line Width",
+  "text.config.moreoverlays-config-fabric.option.render_spawnAColor": "Spawn: Color",
+  "text.config.moreoverlays-config-fabric.option.render_spawnNColor": "Spawn: Night Color",
+  "text.config.moreoverlays-config-fabric.option.render_spawnLineWidth": "Spawn: Line Width",
+
+  "text.config.moreoverlays-config-fabric.option.search_enabled": "Enable Search",
+  "text.config.moreoverlays-config-fabric.option.search_searchCustom": "Search Custom",
+  "text.config.moreoverlays-config-fabric.option.search_searchTooltip": "Search Tooltip",
+  "text.config.moreoverlays-config-fabric.option.search_searchMaxResults": "Max Search Results",
+  "text.config.moreoverlays-config-fabric.option.search_searchBoxColor": "Search Box Color",
+  "text.config.moreoverlays-config-fabric.option.search_filteredSlotColor": "Slot Color",
+  "text.config.moreoverlays-config-fabric.option.search_filteredSlotTransparancy": "Slot Transparency"
 }
