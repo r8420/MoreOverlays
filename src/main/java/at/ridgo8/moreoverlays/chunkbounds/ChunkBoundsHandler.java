@@ -61,26 +61,13 @@ public class ChunkBoundsHandler {
     }
 
     @SubscribeEvent
-    public void onOverlayRender(CustomizeGuiOverlayEvent.DebugText event) {
+    public void onRenderOverlay(CustomizeGuiOverlayEvent.Chat event) {
         if (regionInfo.isEmpty()) {
             return;
         }
         Minecraft mc = Minecraft.getInstance();
-        try {
-            if (mc.getDebugOverlay().showDebugScreen()) {
-                return;
-            }
-        } catch (NoSuchMethodError e) {
-            try {
-                // Use reflection to check if the renderDebug field exists in mc.options. Note: remove this for future versions
-                Field renderDebugField = mc.options.getClass().getField("f_92063_");
-                boolean renderDebug = renderDebugField.getBoolean(mc.options);
-                if (renderDebug) {
-                    return;
-                }
-            } catch(Exception f){
-                // Ignore
-            }
+        if (mc.getDebugOverlay().showDebugScreen()) {
+            return;
         }
 
         int y = 0;
