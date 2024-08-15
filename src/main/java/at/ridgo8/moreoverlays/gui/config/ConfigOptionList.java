@@ -12,6 +12,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import com.mojang.blaze3d.platform.Lighting;
 import net.minecraft.client.resources.language.I18n;
+import net.neoforged.fml.config.IConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.lang.reflect.Field;
@@ -95,13 +96,13 @@ public class ConfigOptionList extends ContainerObjectSelectionList<ConfigOptionL
     public void setConfiguration(ModConfigSpec rootConfig, List<String> path) {
         this.rootConfig = rootConfig;
         try {
-            final Field forgeconfigspec_childconfig = ModConfigSpec.class.getDeclaredField("childConfig");
-            forgeconfigspec_childconfig.setAccessible(true);
-            final Object childConfig_raw = forgeconfigspec_childconfig.get(rootConfig);
-            if (childConfig_raw instanceof CommentedConfig) {
-                this.comments = (CommentedConfig) childConfig_raw;
+            final Field loadedConfigField = ModConfigSpec.class.getDeclaredField("loadedConfig");
+            loadedConfigField.setAccessible(true);
+            final IConfigSpec.ILoadedConfig loadedConfig = (IConfigSpec.ILoadedConfig) loadedConfigField.get(rootConfig);
+            if (loadedConfig.config() instanceof CommentedConfig) {
+                this.comments = loadedConfig.config();
             }
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalStateException | IllegalAccessException e) {
             MoreOverlays.logger.warn("Couldn't reflect childConfig from ModConfigSpec! Comments will be missing.", e);
         }
         this.updatePath(path);

@@ -117,7 +117,11 @@ public class ConfigScreen extends Screen {
     
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderTransparentBackground(guiGraphics);
+        if (Minecraft.getInstance().level == null) {
+            this.renderPanorama(guiGraphics, partialTicks);
+        }
+        this.renderMenuBackground(guiGraphics);
+        this.renderBlurredBackground(partialTicks);
         this.optionList.render(guiGraphics, mouseX, mouseY, partialTicks);
         this.btnReset.render(guiGraphics, mouseX, mouseY, partialTicks);
         this.btnUndo.render(guiGraphics, mouseX, mouseY, partialTicks);
